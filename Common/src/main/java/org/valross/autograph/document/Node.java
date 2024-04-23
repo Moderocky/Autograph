@@ -1,8 +1,9 @@
 package org.valross.autograph.document;
 
+import mx.kenzie.hypertext.Writable;
 import org.valross.constantine.Constant;
 
-public interface Node extends Constant, CharSequence {
+public interface Node extends Constant, CharSequence, Writable {
 
     @Override
     default int length() {

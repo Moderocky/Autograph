@@ -1,7 +1,12 @@
 package org.valross.autograph.parser;
 
 import org.valross.autograph.command.CommandDefinition;
-import org.valross.autograph.document.*;
+import org.valross.autograph.document.Document;
+import org.valross.autograph.document.MultiNode;
+import org.valross.autograph.document.Node;
+import org.valross.autograph.document.TextNode;
+import org.valross.autograph.document.model.ParagraphNode;
+import org.valross.autograph.error.AutographException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,6 +16,10 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
 
     private final List<Node> nodes;
     private final CommandDefinition[] commands;
+
+    public AutographParser(String source, CommandDefinition... commands) {
+        this(new StringReader(source), commands);
+    }
 
     public AutographParser(InputStream stream, CommandDefinition... commands) {
         this(new BufferedReader(new InputStreamReader(stream)), commands);
@@ -69,14 +78,14 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
             this.nodes.add(node);
         }
 
-        protected void addTextNode(String text) {
-            if (text.isBlank()) return;
-            this.addNode(new TextNode(text));
-        }
-
         @Override
         public Node[] nodes() {
             return nodes.toArray(new Node[0]);
+        }
+
+        protected void addTextNode(String text) {
+            if (text.isBlank()) return;
+            this.addNode(new TextNode(text));
         }
 
         @Override
@@ -93,7 +102,7 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
                         try (LocalCommandParser parser = this.delegate(LocalCommandParser::new)) {
                             this.addNode(parser.parse());
                         } catch (IOException ex) {
-                            throw new RuntimeException(ex); // todo
+                            throw new AutographException(ex);
                         }
                         text = new StringBuilder();
                         continue;
@@ -101,17 +110,15 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
                         continue;
                     case '\n':
                         if (lineBreak) {
-                            this.addTextNode(text.toString());
-                            text = new StringBuilder();
-                            continue;
+                            break read;
                         } else lineBreak = true;
                     default:
                         text.append((char) c);
                         if (!Character.isWhitespace(c)) lineBreak = false;
                 }
             }
-            this.addTextNode(text.toString());
-            return new Body(this.nodes());
+            this.addTextNode(text.toString().stripTrailing());
+            return new ParagraphNode(this.nodes());
         }
 
     }

@@ -18,7 +18,8 @@ public class AutographException extends RuntimeException {
         super(cause);
     }
 
-    protected AutographException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected AutographException(String message, Throwable cause, boolean enableSuppression,
+                                 boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 

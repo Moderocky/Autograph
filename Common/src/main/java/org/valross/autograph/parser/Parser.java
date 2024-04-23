@@ -7,16 +7,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.function.Function;
 
-public abstract sealed class Parser<Result extends Node> extends Source implements Closeable, Iterable<Integer>, Iterator<Integer>
+public abstract sealed class Parser<Result extends Node> extends Source
+    implements Closeable, Iterable<Integer>, Iterator<Integer>
     permits AutographParser, ElementParser {
+
     public static final int ESCAPE_CHAR = '\\';
     private static final int EMPTY = -2;
 
     private final Source source;
+    protected boolean closed;
+    int length;
     private boolean escaped;
     private int current = EMPTY;
-    int length;
-    protected boolean closed;
 
     public Parser(InputStream stream) {
         this(new InputStreamReader(stream));
@@ -29,6 +31,10 @@ public abstract sealed class Parser<Result extends Node> extends Source implemen
 
     public Parser(Source source) {
         this.source = source;
+    }
+
+    protected static InputStream input(String text) {
+        return new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
     }
 
     public abstract Result parse() throws IOException;
@@ -94,11 +100,6 @@ public abstract sealed class Parser<Result extends Node> extends Source implemen
     }
 
     @Override
-    public final void remove() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public boolean hasNext() {
         //<editor-fold desc="Check if upcoming character > -1" defaultstate="collapsed">
         if (length >= this.maxLength()) return false;
@@ -128,19 +129,14 @@ public abstract sealed class Parser<Result extends Node> extends Source implemen
     }
 
     @Override
+    public final void remove() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void close() throws IOException {
         this.closed = true;
         this.source.close();
-    }
-
-    @Override
-    void reset() throws IOException {
-        this.source.reset();
-    }
-
-    @Override
-    void mark(int readAheadLimit) throws IOException {
-        this.source.mark(readAheadLimit);
     }
 
     /**
@@ -151,10 +147,6 @@ public abstract sealed class Parser<Result extends Node> extends Source implemen
         this.source.reset();
     }
 
-    protected static InputStream input(String text) {
-        return new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
-    }
-
     int readChar() throws IOException {
         if (closed) return -1;
         if (length >= this.maxLength()) {
@@ -162,6 +154,16 @@ public abstract sealed class Parser<Result extends Node> extends Source implemen
             return -1;
         }
         return source.readChar();
+    }
+
+    @Override
+    void reset() throws IOException {
+        this.source.reset();
+    }
+
+    @Override
+    void mark(int readAheadLimit) throws IOException {
+        this.source.mark(readAheadLimit);
     }
 
 }

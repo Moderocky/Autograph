@@ -18,4 +18,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>kenzie</id>
+            <name>Kenzie's Repository</name>
+            <url>https://repo.kenzie.mx/releases</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>mx.kenzie</groupId>
+            <artifactId>hypertext-common</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+    </dependencies>
+
 </project>
