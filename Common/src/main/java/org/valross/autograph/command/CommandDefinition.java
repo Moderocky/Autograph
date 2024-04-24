@@ -9,6 +9,10 @@ import java.util.function.Function;
 
 public record CommandDefinition(String command, ParserSupplier parser) {
 
+    public static CommandDefinition ofArguments(String command, SimpleCommandParser.ArgumentCommand function) {
+        return new CommandDefinition(command, source -> new SimpleCommandParser(function, source));
+    }
+
     public static CommandDefinition of(String command, SimpleCommandParser.SimpleCommand function) {
         return new CommandDefinition(command, source -> new SimpleCommandParser(function, source));
     }

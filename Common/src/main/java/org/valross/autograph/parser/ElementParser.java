@@ -19,7 +19,7 @@ public abstract non-sealed class ElementParser<Result extends Node> extends Pars
         this.closed = true;
     }
 
-    protected String readLine() {
+    public String readLine() {
         final StringBuilder builder = new StringBuilder();
         for (int c : this) builder.append((char) c);
         return builder.toString();

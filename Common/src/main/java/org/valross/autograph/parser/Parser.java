@@ -89,7 +89,7 @@ public abstract sealed class Parser<Result extends Node> extends Source
         return current;
     }
 
-    protected <Type extends ElementParser<? extends Node>>
+    public <Type extends ElementParser<? extends Node>>
     Type delegate(Function<Source, Type> supplier) {
         return supplier.apply(this);
     }

@@ -33,3 +33,11 @@ All commands need a header, even if they take no input.
 
 The processing of the command's header depends on the command used.
 Some commands may take one or more arguments, separated by a comma `,`.
+
+```
+&my cool command(an argument, another argument)
+```
+
+Commands have complete authority over how to parse anything inside their `()` header.
+
+The only rule is that they must terminate at a closing `)` bracket.
