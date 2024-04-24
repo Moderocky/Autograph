@@ -1,8 +1,8 @@
 package org.valross.autograph.parser;
 
 import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.document.CommandNode;
 import org.valross.autograph.document.Document;
-import org.valross.autograph.document.MultiNode;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.document.TextNode;
 import org.valross.autograph.document.model.ParagraphNode;
@@ -64,7 +64,7 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
 
     }
 
-    public class TextAreaParser extends ElementParser<MultiNode> implements MultiNodeParser {
+    public class TextAreaParser extends ElementParser<Node> implements MultiNodeParser {
 
         private final List<Node> nodes;
 
@@ -89,7 +89,7 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
         }
 
         @Override
-        public MultiNode parse() {
+        public Node parse() {
             boolean lineBreak = false;
             StringBuilder text = new StringBuilder();
             read:
@@ -118,7 +118,9 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
                 }
             }
             this.addTextNode(text.toString().stripTrailing());
-            return new ParagraphNode(this.nodes());
+            final Node[] nodes = this.nodes();
+            if (nodes.length == 1 && nodes[0] instanceof CommandNode node) return node;
+            return new ParagraphNode(nodes);
         }
 
     }
