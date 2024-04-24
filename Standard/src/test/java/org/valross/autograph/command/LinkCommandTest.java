@@ -38,4 +38,25 @@ public class LinkCommandTest extends DOMTest {
         this.test(expected, document);
     }
 
+    @Test
+    public void withContentsCommand() throws IOException {
+        final String content = "&link(https://foo, hello &b(there))", expected = "<body><a href=\"https://foo\"><p>hello <b>there</b></p></a></body>";
+        final Document document = this.parse(new AutographParser(content, Commands.standard()));
+        this.test(expected, document);
+    }
+
+    @Test
+    public void withContents2Commands() throws IOException {
+        final String content = "&link(https://foo, &i(hello) &b(there))", expected = "<body><a href=\"https://foo\"><p><i>hello</i><b>there</b></p></a></body>";
+        final Document document = this.parse(new AutographParser(content, Commands.standard()));
+        this.test(expected, document);
+    }
+
+    @Test
+    public void nestedCommands() throws IOException {
+        final String content = "&link(https://foo, &i(&b(hello)))", expected = "<body><a href=\"https://foo\"><i><b>hello</b></i></a></body>";
+        final Document document = this.parse(new AutographParser(content, Commands.standard()));
+        this.test(expected, document);
+    }
+
 }
