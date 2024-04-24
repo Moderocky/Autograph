@@ -25,9 +25,7 @@ public class CommandParserTest extends ParserTest {
         }
         assert document != null;
         assert document.nodes().length == 1;
-        assert document.nodes()[0] instanceof ParagraphNode body
-            && body.nodes().length == 1
-            && body.nodes()[0] instanceof CommandNode node
+        assert document.nodes()[0] instanceof CommandNode node
             && node.command().equals("test")
             && node.node() instanceof TextNode text
             && text.value().equals("hello foo");

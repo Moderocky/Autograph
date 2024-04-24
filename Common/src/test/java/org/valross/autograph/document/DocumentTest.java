@@ -29,7 +29,7 @@ public class DocumentTest {
     @Test
     public void commandOnly() throws IOException {
         final CommandDefinition hello = CommandDefinition.of("hello", () -> new TextNode("hello"));
-        final String content = "&hello()", expected = "<body><p>hello</p></body>";
+        final String content = "&hello()", expected = "<body>hello</body>";
         final Document document = this.parse(new AutographParser(content, hello));
         this.test(expected, document);
     }
@@ -37,7 +37,7 @@ public class DocumentTest {
     @Test
     public void commandOnlyHead() throws IOException {
         final CommandDefinition hello = CommandDefinition.of("hello", (text) -> new TextNode("hello " + text));
-        final String content = "&hello(there)", expected = "<body><p>hello there</p></body>";
+        final String content = "&hello(there)", expected = "<body>hello there</body>";
         final Document document = this.parse(new AutographParser(content, hello));
         this.test(expected, document);
     }
