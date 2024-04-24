@@ -5,16 +5,16 @@ import org.valross.autograph.parser.ElementParser;
 import org.valross.autograph.parser.Source;
 import org.valross.autograph.parser.command.SimpleCommandParser;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public record CommandDefinition(String command, ParserSupplier parser) {
 
     public static CommandDefinition ofArguments(String command, SimpleCommandParser.ArgumentCommand function) {
-        return new CommandDefinition(command, source -> new SimpleCommandParser(function, source));
+        return new CommandDefinition(command, (source, _) -> new SimpleCommandParser(function, source));
     }
 
     public static CommandDefinition of(String command, SimpleCommandParser.SimpleCommand function) {
-        return new CommandDefinition(command, source -> new SimpleCommandParser(function, source));
+        return new CommandDefinition(command, (source, _) -> new SimpleCommandParser(function, source));
     }
 
     public static CommandDefinition of(String command, SimpleCommandParser.HeadlessCommand function) {
@@ -22,7 +22,12 @@ public record CommandDefinition(String command, ParserSupplier parser) {
     }
 
     @FunctionalInterface
-    public interface ParserSupplier extends Function<Source, ElementParser<? extends Node>> {
+    public interface ParserSupplier extends BiFunction<Source, CommandDefinition[], ElementParser<? extends Node>> {
+    }
+
+    @Override
+    public String toString() {
+        return "&" + command;
     }
 
 }

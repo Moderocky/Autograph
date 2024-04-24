@@ -1,17 +1,15 @@
 package org.valross.autograph.parser;
 
+import org.valross.autograph.command.CommandDefinition;
 import org.valross.autograph.document.Node;
-
-import java.io.Reader;
 
 public abstract non-sealed class ElementParser<Result extends Node> extends Parser<Result> {
 
-    public ElementParser(Source source) {
-        super(source);
-    }
+    protected final CommandDefinition[] commands;
 
-    public ElementParser(Reader reader) {
-        super(reader);
+    public ElementParser(Source source, CommandDefinition... commands) {
+        super(source);
+        this.commands = commands;
     }
 
     @Override
@@ -23,6 +21,11 @@ public abstract non-sealed class ElementParser<Result extends Node> extends Pars
         final StringBuilder builder = new StringBuilder();
         for (int c : this) builder.append((char) c);
         return builder.toString();
+    }
+
+    @Override
+    public CommandDefinition[] commands() {
+        return commands;
     }
 
 }

@@ -20,4 +20,8 @@ public interface Node extends Constant, CharSequence, Writable {
         return this.toString().subSequence(start, end);
     }
 
+    default boolean isSingleLine() {
+        return true;
+    }
+
 }

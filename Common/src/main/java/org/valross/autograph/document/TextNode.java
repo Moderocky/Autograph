@@ -1,5 +1,6 @@
 package org.valross.autograph.document;
 
+import mx.kenzie.hypertext.internal.FormattedOutputStream;
 import org.valross.constantine.RecordConstant;
 
 import java.io.IOException;
@@ -30,7 +31,19 @@ public record TextNode(String value) implements Node, RecordConstant {
 
     @Override
     public void write(OutputStream stream, Charset charset) throws IOException {
-        stream.write(value.getBytes(charset));
+        if (stream instanceof FormattedOutputStream format && !this.isSingleLine()) {
+            final String[] lines = value.split("\n");
+            format.write(lines[0].getBytes(charset));
+            for (int i = 1; i < lines.length; i++) {
+                format.writeLine();
+                format.write(lines[i].getBytes(charset));
+            }
+        } else stream.write(value.getBytes(charset));
+    }
+
+    @Override
+    public boolean isSingleLine() {
+        return value.indexOf('\n') == -1;
     }
 
 }

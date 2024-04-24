@@ -1,11 +1,12 @@
 package org.valross.autograph.parser;
 
+import org.valross.autograph.command.CommandDefinition;
 import org.valross.autograph.document.Node;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public abstract sealed class Parser<Result extends Node> extends Source
     implements Closeable, Iterable<Integer>, Iterator<Integer>
@@ -38,6 +39,8 @@ public abstract sealed class Parser<Result extends Node> extends Source
     }
 
     public abstract Result parse() throws IOException;
+
+    public abstract CommandDefinition[] commands();
 
     private void read() throws IOException {
         //<editor-fold desc="Store the next (unescaped) character" defaultstate="collapsed">
@@ -90,8 +93,8 @@ public abstract sealed class Parser<Result extends Node> extends Source
     }
 
     public <Type extends ElementParser<? extends Node>>
-    Type delegate(Function<Source, Type> supplier) {
-        return supplier.apply(this);
+    Type delegate(BiFunction<Source, CommandDefinition[], Type> supplier) {
+        return supplier.apply(this, this.commands());
     }
 
     @Override
@@ -164,6 +167,11 @@ public abstract sealed class Parser<Result extends Node> extends Source
     @Override
     void mark(int readAheadLimit) throws IOException {
         this.source.mark(readAheadLimit);
+    }
+
+    @Override
+    public int caret() {
+        return source.caret();
     }
 
 }

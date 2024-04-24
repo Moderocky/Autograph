@@ -1,15 +1,13 @@
 package org.valross.autograph.document;
 
-import mx.kenzie.hypertext.PageWriter;
-import mx.kenzie.hypertext.Writable;
 import org.junit.Test;
+import org.valross.autograph.Autograph;
 import org.valross.autograph.command.CommandDefinition;
 import org.valross.autograph.parser.AutographParser;
-import org.valross.autograph.parser.Parser;
 
 import java.io.IOException;
 
-public class DocumentTest {
+public class DocumentTest extends DOMTest {
 
     @Test
     public void simple() throws IOException {
@@ -49,20 +47,6 @@ public class DocumentTest {
         final String content = "&hello(there, world, foo)", expected = "<body>there+world+foo</body>";
         final Document document = this.parse(new AutographParser(content, hello));
         this.test(expected, document);
-    }
-
-    private void test(String expected, Writable actual) {
-        final StringBuilder builder = new StringBuilder();
-        try (final PageWriter writer = new PageWriter(builder)) {
-            writer.write(actual);
-        }
-        assert expected.contentEquals(builder) : "expected vs got:\n" + expected + System.lineSeparator() + builder;
-    }
-
-    private <Result extends Node> Result parse(Parser<Result> parser) throws IOException {
-        try (parser) {
-            return parser.parse();
-        }
     }
 
 }

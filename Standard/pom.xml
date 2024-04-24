@@ -9,14 +9,22 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>${project.parent.artifactId}-common</artifactId>
-    <name>Common</name>
-    <description>The parsing and document/node structure used by all autograph implementations.</description>
+    <artifactId>${project.parent.artifactId}-standard</artifactId>
+    <name>Standard</name>
+    <description>The standard set of HTML-based commands for Autograph.</description>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.valross</groupId>
+            <artifactId>${project.parent.artifactId}-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

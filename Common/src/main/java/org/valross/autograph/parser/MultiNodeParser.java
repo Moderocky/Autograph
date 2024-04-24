@@ -2,7 +2,7 @@ package org.valross.autograph.parser;
 
 import org.valross.autograph.document.Node;
 
-interface MultiNodeParser {
+public interface MultiNodeParser {
 
     void addNode(Node node);
 

@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>Common</module>
+        <module>Standard</module>
     </modules>
 
     <properties>
@@ -31,6 +32,17 @@
             <groupId>mx.kenzie</groupId>
             <artifactId>hypertext-common</artifactId>
             <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.valross</groupId>
+            <artifactId>constantine</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

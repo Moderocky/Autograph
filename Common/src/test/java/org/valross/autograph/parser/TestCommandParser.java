@@ -8,8 +8,8 @@ public class TestCommandParser extends CommandParser<Node> {
 
     static final CommandDefinition TEST = new CommandDefinition("test", TestCommandParser::new);
 
-    public TestCommandParser(Source source) {
-        super(source);
+    public TestCommandParser(Source source, CommandDefinition... commands) {
+        super(source, commands);
     }
 
     @Override

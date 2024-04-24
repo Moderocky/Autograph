@@ -1,12 +1,8 @@
 package org.valross.autograph.parser;
 
 import org.valross.autograph.command.CommandDefinition;
-import org.valross.autograph.document.CommandNode;
 import org.valross.autograph.document.Document;
 import org.valross.autograph.document.Node;
-import org.valross.autograph.document.TextNode;
-import org.valross.autograph.document.model.ParagraphNode;
-import org.valross.autograph.error.AutographException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -33,12 +29,15 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
 
     @Override
     public Document parse() throws IOException {
-        while (this.hasNext()) {
-            try (final TextAreaParser text = this.delegate(TextAreaParser::new)) {
-                this.addNode(text.parse());
-            }
-        }
+        do try (final TextAreaParser text = this.delegate(TextAreaParser::new)) {
+            this.addNode(text.parse());
+        } while (this.hasNext());
         return new Document(this.nodes());
+    }
+
+    @Override
+    public CommandDefinition[] commands() {
+        return commands;
     }
 
     @Override
@@ -49,80 +48,6 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
     @Override
     public Node[] nodes() {
         return nodes.toArray(new Node[0]);
-    }
-
-    public class LocalCommandParser extends CommandHeaderParser {
-
-        public LocalCommandParser(Source source) {
-            super(source);
-        }
-
-        @Override
-        public CommandDefinition[] commands() {
-            return commands;
-        }
-
-    }
-
-    public class TextAreaParser extends ElementParser<Node> implements MultiNodeParser {
-
-        private final List<Node> nodes;
-
-        public TextAreaParser(Source source) {
-            super(source);
-            this.nodes = new ArrayList<>();
-        }
-
-        @Override
-        public void addNode(Node node) {
-            this.nodes.add(node);
-        }
-
-        @Override
-        public Node[] nodes() {
-            return nodes.toArray(new Node[0]);
-        }
-
-        protected void addTextNode(String text) {
-            if (text.isBlank()) return;
-            this.addNode(new TextNode(text));
-        }
-
-        @Override
-        public Node parse() {
-            boolean lineBreak = false;
-            StringBuilder text = new StringBuilder();
-            read:
-            for (int c : this) {
-                switch (c) {
-                    case -1:
-                        break read;
-                    case '&':
-                        this.addTextNode(text.toString());
-                        try (LocalCommandParser parser = this.delegate(LocalCommandParser::new)) {
-                            this.addNode(parser.parse());
-                        } catch (IOException ex) {
-                            throw new AutographException(ex);
-                        }
-                        text = new StringBuilder();
-                        continue;
-                    case '\r':
-                        continue;
-                    case '\n':
-                        if (lineBreak) {
-                            break read;
-                        } else lineBreak = true;
-                    default:
-                        text.append((char) c);
-                        if (!Character.isWhitespace(c)) lineBreak = false;
-                }
-            }
-            this.addTextNode(text.toString().stripTrailing());
-            final Node[] nodes = this.nodes();
-            if (nodes.length == 1 && nodes[0] instanceof CommandNode node) return node;
-            return new ParagraphNode(nodes);
-        }
-
     }
 
 }
