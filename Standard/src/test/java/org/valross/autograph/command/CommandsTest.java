@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.valross.autograph.Autograph;
 import org.valross.autograph.document.Document;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
@@ -39,12 +38,12 @@ public class CommandsTest {
 
             this is a new paragraph!
             yay!
-                        
+
             and &i(this) is in italics!
 
             &article(
             this command is on its own, so it gets its own box!
-                        
+
             and it's in like a lil space idk
             )
             """;
