@@ -8,7 +8,7 @@ public record Document(Node... nodes) implements MultiNode, Node, ModelNode, Rec
 
     @Override
     public String toString() {
-        return String.join(System.lineSeparator(), nodes);
+        return "Document[" + String.join(", ", nodes) + ']';
     }
 
     @Override

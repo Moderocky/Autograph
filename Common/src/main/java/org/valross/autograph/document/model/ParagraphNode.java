@@ -12,8 +12,14 @@ public record ParagraphNode(Node... nodes) implements MultiNode, ModelNode, Reco
     }
 
     public Node simplify() {
-        for (Node node : nodes) if (!(node instanceof TextNode)) return this;
-        return new Body(nodes);
+        boolean anyText = false, anyNonText = false;
+        for (Node node : nodes) {
+            if (node instanceof TextNode) anyText = true;
+            else anyNonText = true;
+        }
+        if (anyText) return this;
+        if (anyNonText) return new Body(nodes);
+        else return new EmptyNode();
     }
 
     public Node overSimplify() {
@@ -24,6 +30,11 @@ public record ParagraphNode(Node... nodes) implements MultiNode, ModelNode, Reco
     public HTMElement compile() {
         if (this.isSingleLine()) return StandardElements.P.child(nodes);
         return StandardElements.P.block().child(nodes);
+    }
+
+    @Override
+    public String toString() {
+        return "Paragraph[" + String.join(", ", nodes) + ']';
     }
 
 }

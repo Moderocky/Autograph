@@ -10,7 +10,7 @@ public record Body(Node... nodes) implements RecordConstant, MultiNode {
 
     @Override
     public String toString() {
-        return String.join(System.lineSeparator(), nodes);
+        return "Body[" + String.join(", ", nodes) + ']';
     }
 
     @Override

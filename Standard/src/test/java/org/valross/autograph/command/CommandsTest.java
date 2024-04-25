@@ -8,11 +8,6 @@ import java.io.IOException;
 
 public class CommandsTest extends DOMTest {
 
-    private void test(String content, String expected) throws IOException {
-        final Document document = this.parse(new AutographParser(content, Commands.standard()));
-        this.test(expected, document);
-    }
-
     @Test
     public void i() throws IOException {
         final String content = "&i(foo)", expected = "<body><i>foo</i></body>";
@@ -67,7 +62,8 @@ public class CommandsTest extends DOMTest {
     @Test
     public void table() throws IOException {
         this.test("&table(foo)", "<body><table><p>foo</p></table></body>");
-        this.test("&table(&row(&cell(hello) &cell(there)))", "<body><table><tr><td>hello</td> <td>there</td></tr></table></body>");
+        this.test("&table(&row(&cell(hello) &cell(there)))", "<body><table><tr><td>hello</td> " +
+            "<td>there</td></tr></table></body>");
     }
 
     @Test
@@ -97,6 +93,41 @@ public class CommandsTest extends DOMTest {
             "></body>";
         final Document document = this.parse(new AutographParser(content, Commands.standard()));
         this.test(expected, document);
+    }
+
+    @Test
+    public void codeBlock() throws IOException {
+        this.test("&codeBlock(foo)", "<body><pre><code>foo</code></pre></body>");
+        this.test("&codeBlock(function())", "<body><pre><code>function()</code></pre></body>");
+        this.test("&codeBlock(public void test(String string))", "<body><pre><code>public void test(String string)" +
+            "</code></pre></body>");
+        this.test("""
+                      My Code:
+                                            
+                      &codeBlock(
+                      something:
+                        something else: foo()
+                      )""", """
+                      <body><p>My Code:</p><pre><code>something:
+                        something else: foo()</code></pre></body>""");
+        this.test("""
+                      My Code:
+                                            
+                      &codeBlock(
+                      something:
+                        something else: foo()
+                      )""", """
+                      <body>
+                      \t<p>My Code:</p>
+                      \t<pre><code>something:
+                        something else: foo()</code></pre>
+                      </body>""", true);
+    }
+
+    @Test
+    public void code() throws IOException {
+        this.test("&code(foo)", "<body><code>foo</code></body>");
+        this.test("&code(function())", "<body><code>function()</code></body>");
     }
 
 }

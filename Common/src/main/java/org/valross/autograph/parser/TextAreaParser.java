@@ -67,7 +67,7 @@ public class TextAreaParser extends ElementParser<Node> implements MultiNodePars
         this.addTextNode(text.toString().stripTrailing());
         final Node[] nodes = this.nodes();
         if (nodes.length == 1 && nodes[0] instanceof CommandNode node) return node;
-        return new ParagraphNode(nodes);
+        return new ParagraphNode(nodes).simplify();
     }
 
     public CommandDefinition[] commands() {

@@ -29,4 +29,9 @@ public record HTMNode(HTMElement element, Node... contents) implements ModelNode
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public String toString() {
+        return "<" + element.getTag() + ">[" + String.join(", ", contents) + ']';
+    }
+
 }

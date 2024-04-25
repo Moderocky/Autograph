@@ -3,6 +3,8 @@ Autograph
 
 An extensible markup language with a simple design.
 
+# Common Design
+
 ## Elements
 
 ### Text
@@ -41,3 +43,7 @@ Some commands may take one or more arguments, separated by a comma `,`.
 Commands have complete authority over how to parse anything inside their `()` header.
 
 The only rule is that they must terminate at a closing `)` bracket.
+
+# Standard Command Set
+
+##

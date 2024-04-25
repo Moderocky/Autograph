@@ -13,14 +13,14 @@ public record TextNode(String value) implements Node, RecordConstant {
         final StringBuilder result = new StringBuilder();
         for (int i = 0; i < value.length(); i++) {
             final char c = value.charAt(i);
-            switch (c) {
-                case '<' -> result.append("&lt;");
-                case '>' -> result.append("&gt;");
-                case '&' -> result.append("&amp;");
-                case '"' -> result.append("&quot;");
-                case '\'' -> result.append("&apos;");
-                default -> result.append(c);
-            }
+            result.append(switch (c) {
+                case '<' -> "&lt;";
+                case '>' -> "&gt;";
+                case '&' -> "&amp;";
+                case '"' -> "&quot;";
+                case '\'' -> "&apos;";
+                default -> Character.toString(c);
+            });
         }
         return result.toString();
     }

@@ -24,6 +24,8 @@ public final class Commands {
     public static final CommandDefinition LINK = new CommandDefinition("link", LinkCommand::new);
     public static final CommandDefinition HTML = new CommandDefinition("html", HTMLCommand::new);
     public static final CommandDefinition SOFT_TABLE = new CommandDefinition("softTable", SoftTableCommand::new);
+    public static final CommandDefinition CODE = new CommandDefinition("code", CodeCommand::new);
+    public static final CommandDefinition CODE_BLOCK = new CommandDefinition("codeBlock", CodeBlockCommand::new);
 
     private static final CommandDefinition[] commands = new CommandDefinition[] {
         BOLD,
@@ -37,7 +39,9 @@ public final class Commands {
         TABLE,
         ROW,
         CELL,
-        SOFT_TABLE
+        SOFT_TABLE,
+        CODE,
+        CODE_BLOCK
     };
 
     public static CommandDefinition[] standard() {
