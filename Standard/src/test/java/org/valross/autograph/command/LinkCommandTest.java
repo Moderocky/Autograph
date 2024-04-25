@@ -47,7 +47,7 @@ public class LinkCommandTest extends DOMTest {
 
     @Test
     public void withContents2Commands() throws IOException {
-        final String content = "&link(https://foo, &i(hello) &b(there))", expected = "<body><a href=\"https://foo\"><p><i>hello</i><b>there</b></p></a></body>";
+        final String content = "&link(https://foo, &i(hello) &b(there))", expected = "<body><a href=\"https://foo\"><p><i>hello</i> <b>there</b></p></a></body>";
         final Document document = this.parse(new AutographParser(content, Commands.standard()));
         this.test(expected, document);
     }

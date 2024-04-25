@@ -33,7 +33,7 @@ public class TextAreaParser extends ElementParser<Node> implements MultiNodePars
     }
 
     protected void addTextNode(String text) {
-        if (text.isBlank()) return;
+        if (text.isEmpty()) return;
         this.addNode(new TextNode(text));
     }
 
