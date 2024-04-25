@@ -18,7 +18,7 @@ public class CiteCommand extends HTMCommandParser {
     }
 
     @Override
-    public HTMNode parse() throws IOException {
+    public HTMNode parse() throws IOException { // todo maybe footnotes???
         final String href = this.nextArgument();
         if (href.isBlank()) throw new CommandException("Citation was blank", this);
         if (((int) this.next()) != ',') throw new CommandException("Citation requires second (quote) argument", this);

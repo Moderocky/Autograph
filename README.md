@@ -117,3 +117,27 @@ Arguments exceeding the table's cell count are discarded.
   cell 5, cell 6
 )
 ```
+
+### `&cite`
+
+The citation command is designed for inserting sourced quotes.
+
+Its first argument is a reference/url (like `&link`) followed by its content.
+The citation switches between inline and block-mode based on its content.
+
+Citations (of either inline or block type) have the `.ag-citation` class applied in HTML compilation.
+
+#### Inline
+```
+The empire state building is &cite(https://bad-facts, 5 metres tall)!
+```
+
+#### Block
+```
+&cite(https://my-rubbish-poem, 
+    o empire state
+    you are pretty tall
+    i myself am not 
+    quite 5 metres
+)
+```
