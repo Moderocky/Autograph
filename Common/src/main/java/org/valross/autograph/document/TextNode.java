@@ -9,6 +9,26 @@ import java.nio.charset.Charset;
 
 public record TextNode(String value) implements Node, RecordConstant {
 
+    private static String sanitise(String value) {
+        final StringBuilder result = new StringBuilder();
+        for (int i = 0; i < value.length(); i++) {
+            final char c = value.charAt(i);
+            switch (c) {
+                case '<' -> result.append("&lt;");
+                case '>' -> result.append("&gt;");
+                case '&' -> result.append("&amp;");
+                case '"' -> result.append("&quot;");
+                case '\'' -> result.append("&apos;");
+                default -> result.append(c);
+            }
+        }
+        return result.toString();
+    }
+
+    public TextNode(String value) {
+        this.value = sanitise(value);
+    }
+
     @Override
     public String toString() {
         return value;
