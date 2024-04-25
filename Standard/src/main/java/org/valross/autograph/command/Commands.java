@@ -17,10 +17,13 @@ public final class Commands {
     public static final CommandDefinition BOLD = inlineCommand(StandardElements.B),
         ITALIC = inlineCommand(StandardElements.I),
         UNDERLINE = inlineCommand(StandardElements.U),
-        STRIKETHROUGH = inlineCommand(StandardElements.S);
+        STRIKETHROUGH = inlineCommand(StandardElements.S),
+        QUOTE = inlineCommand(StandardElements.Q);
     public static final CommandDefinition TABLE = blockCommand(StandardElements.TABLE),
         ROW = inlineCommand("row", StandardElements.TR),
         CELL = inlineCommand("cell", StandardElements.TD);
+    public static final CommandDefinition BLOCK_QUOTE = blockCommand("quote", StandardElements.BLOCKQUOTE);
+    public static final CommandDefinition CITE = new CommandDefinition("cite", CiteCommand::new);
     public static final CommandDefinition LINK = new CommandDefinition("link", LinkCommand::new);
     public static final CommandDefinition HTML = new CommandDefinition("html", HTMLCommand::new);
     public static final CommandDefinition SOFT_TABLE = new CommandDefinition("softTable", SoftTableCommand::new);
@@ -32,8 +35,11 @@ public final class Commands {
         ITALIC,
         UNDERLINE,
         STRIKETHROUGH,
+        QUOTE,
         ARTICLE,
         ASIDE,
+        BLOCK_QUOTE,
+        CITE,
         LINK,
         HTML,
         TABLE,
@@ -49,7 +55,7 @@ public final class Commands {
     }
 
     public static CommandDefinition[] formatting() {
-        return new CommandDefinition[] {BOLD, ITALIC, UNDERLINE, STRIKETHROUGH};
+        return new CommandDefinition[] {BOLD, ITALIC, UNDERLINE, STRIKETHROUGH, QUOTE};
     }
 
     public static CommandDefinition[] tables() {
@@ -84,6 +90,10 @@ public final class Commands {
     }
 
     private static CommandDefinition blockCommand(HTMElement tag) {
+        return blockCommand(tag.getTag(), tag);
+    }
+
+    private static CommandDefinition blockCommand(String name, HTMElement tag) {
         //<editor-fold desc="Fake command parser using the tag" defaultstate="collapsed">
         class StaticCommandParser extends HTMCommandParser {
 
@@ -98,7 +108,7 @@ public final class Commands {
 
         }
         //</editor-fold>
-        return new CommandDefinition(tag.getTag(), StaticCommandParser::new);
+        return new CommandDefinition(name, StaticCommandParser::new);
     }
 
 }

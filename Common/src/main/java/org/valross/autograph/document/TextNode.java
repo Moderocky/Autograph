@@ -25,10 +25,6 @@ public record TextNode(String value) implements Node, RecordConstant {
         return result.toString();
     }
 
-    public TextNode(String value) {
-        this.value = sanitise(value);
-    }
-
     @Override
     public String toString() {
         return value;
@@ -56,9 +52,9 @@ public record TextNode(String value) implements Node, RecordConstant {
             format.write(lines[0].getBytes(charset));
             for (int i = 1; i < lines.length; i++) {
                 format.writeLine();
-                format.write(lines[i].getBytes(charset));
+                format.write(sanitise(lines[i]).getBytes(charset));
             }
-        } else stream.write(value.getBytes(charset));
+        } else stream.write(sanitise(value).getBytes(charset));
     }
 
     @Override

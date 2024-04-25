@@ -16,9 +16,7 @@ public class CodeCommand extends BalancedBracketParser {
     @Override
     public HTMNode parse() throws IOException {
         final StringBuilder builder = new StringBuilder();
-        for (int c : this) {
-            builder.append((char) c);
-        }
+        for (int c : this) builder.append((char) c);
         return new HTMNode(StandardElements.CODE, new TextNode(builder.toString()));
     }
 

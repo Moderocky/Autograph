@@ -130,4 +130,24 @@ public class CommandsTest extends DOMTest {
         this.test("&code(function())", "<body><code>function()</code></body>");
     }
 
+    @Test
+    public void quote() throws IOException {
+        this.test("&quote(foo)", "<body><blockquote><p>foo</p></blockquote></body>");
+    }
+
+    @Test
+    public void q() throws IOException {
+        this.test("&q(foo)", "<body><q>foo</q></body>");
+    }
+
+    @Test
+    public void cite() throws IOException {
+        this.test("&cite(https://foo, my thing)", "<body><q cite=\"https://foo\" class=\"ag-citation\"><p>my " +
+            "thing</p></q></body>");
+        this.test("&cite(https://foo, my &b(cool) thing)", "<body><q cite=\"https://foo\" class=\"ag-citation\"><p>my" +
+            " <b>cool</b> thing</p></q></body>");
+        this.test("&cite(https://foo, my\n\ncool\n\nthing)", "<body><blockquote cite=\"https://foo\" " +
+            "class=\"ag-citation\"><p>my</p><p>cool</p><p>thing</p></blockquote></body>");
+    }
+
 }
