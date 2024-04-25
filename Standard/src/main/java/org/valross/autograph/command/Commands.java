@@ -19,6 +19,7 @@ public final class Commands {
     public static final CommandDefinition ARTICLE = blockCommand(StandardElements.ARTICLE);
     public static final CommandDefinition ASIDE = blockCommand(StandardElements.ASIDE);
     public static final CommandDefinition LINK = new CommandDefinition("link", LinkCommand::new);
+    public static final CommandDefinition HTML = new CommandDefinition("html", HTMLCommand::new);
 
     private static final CommandDefinition[] commands = new CommandDefinition[] {
         BOLD,
@@ -27,7 +28,8 @@ public final class Commands {
         STRIKETHROUGH,
         ARTICLE,
         ASIDE,
-        LINK
+        LINK,
+        HTML
     };
 
     public static CommandDefinition[] standard() {
