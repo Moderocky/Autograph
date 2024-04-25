@@ -8,9 +8,15 @@ import java.lang.constant.Constable;
 
 public record HTMNode(HTMElement element, Node... contents) implements ModelNode {
 
+    public HTMNode(HTMElement element, Node... contents) {
+        this.element = element.working();
+        this.contents = contents;
+    }
+
     @Override
     public HTMElement compile() {
-        return element.child(contents);
+        if (element.isFrozen()) return element;
+        return element.child(contents).finalise();
     }
 
     @Override

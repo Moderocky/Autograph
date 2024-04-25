@@ -24,8 +24,7 @@ public class LinkCommand extends HTMCommandParser {
         final HREFElement link = StandardElements.A.href(href);
         switch ((int) this.next()) {
             case ',':
-                while (Character.isWhitespace(this.next()));
-                this.stowChar();
+                this.consumeWhitespace();
                 final List<Node> nodes = new ArrayList<>();
                 do try (InnerTextParser parser = this.delegate(InnerTextParser::new)) {
                     nodes.add(parser.parse());

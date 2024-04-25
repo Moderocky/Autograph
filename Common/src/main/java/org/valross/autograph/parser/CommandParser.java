@@ -24,18 +24,4 @@ public abstract class CommandParser<Result extends Node> extends ElementParser<R
         }
     }
 
-    protected class InnerTextParser extends TextAreaParser {
-
-        public InnerTextParser(Source source, CommandDefinition... commands) {
-            super(source, commands);
-        }
-
-        @Override
-        protected boolean isTerminatingChar(int c) {
-            return CommandParser.this.isTerminatingChar(c)
-                || super.isTerminatingChar(c);
-        }
-
-    }
-
 }

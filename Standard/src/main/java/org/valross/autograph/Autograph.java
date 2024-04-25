@@ -1,6 +1,8 @@
 package org.valross.autograph;
 
+import mx.kenzie.hypertext.PageWriter;
 import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.Commands;
 import org.valross.autograph.document.Document;
 import org.valross.autograph.error.AutographException;
 import org.valross.autograph.parser.AutographParser;
@@ -9,8 +11,14 @@ import java.io.*;
 
 public class Autograph {
 
-    public static void main(String... args) {
-
+    public static void main(String... args) throws IOException {
+        final Document document;
+        try (AutographParser parser = new AutographParser(System.in, Commands.standard())) {
+            document = parser.parse();
+        }
+        try (PageWriter writer = new PageWriter(System.out)) {
+            writer.format("\t").write(document);
+        }
     }
 
     public static Document parse(String source, CommandDefinition... commands) {

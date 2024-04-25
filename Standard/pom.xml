@@ -9,7 +9,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>${project.parent.artifactId}-standard</artifactId>
+    <artifactId>autograph-standard</artifactId>
     <name>Standard</name>
     <description>The standard set of HTML-based commands for Autograph.</description>
 

@@ -42,14 +42,12 @@ public class TextAreaParser extends ElementParser<Node> implements MultiNodePars
         boolean lineBreak = false;
         StringBuilder text = new StringBuilder();
         read:
-        for (int c : this) {
+        for (final int c : this) {
             if (this.isTerminatingChar(c)) break;
             switch (c) {
                 case '&':
                     this.addTextNode(text.toString());
-                    try (
-                        LocalCommandParser parser =
-                            this.delegate(LocalCommandParser::new)) {
+                    try (LocalCommandParser parser = this.delegate(LocalCommandParser::new)) {
                         this.addNode(parser.parse());
                     } catch (IOException ex) {
                         throw new AutographException(ex);
@@ -59,9 +57,8 @@ public class TextAreaParser extends ElementParser<Node> implements MultiNodePars
                 case '\r':
                     continue;
                 case '\n':
-                    if (lineBreak) {
-                        break read;
-                    } else lineBreak = true;
+                    if (lineBreak) break read;
+                    else lineBreak = true;
                 default:
                     text.append((char) c);
                     if (!Character.isWhitespace(c)) lineBreak = false;

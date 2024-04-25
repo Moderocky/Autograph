@@ -9,7 +9,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>${project.parent.artifactId}-common</artifactId>
+    <artifactId>autograph-common</artifactId>
     <name>Common</name>
     <description>The parsing and document/node structure used by all autograph implementations.</description>
 

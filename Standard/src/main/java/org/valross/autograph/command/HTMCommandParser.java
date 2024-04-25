@@ -5,7 +5,6 @@ import org.valross.autograph.document.model.HTMNode;
 import org.valross.autograph.parser.CommandParser;
 import org.valross.autograph.parser.MultiNodeParser;
 import org.valross.autograph.parser.Source;
-import org.valross.autograph.parser.TextAreaParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,8 +20,7 @@ public abstract class HTMCommandParser extends CommandParser<HTMNode> implements
     }
 
     protected Node[] consume() throws IOException {
-        while (Character.isWhitespace(this.next()));
-        this.stowChar();
+        this.consumeWhitespace();
         do try (final InnerTextParser text = this.delegate(InnerTextParser::new)) {
             this.addNode(text.parse());
         } while (this.hasNext());

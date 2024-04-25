@@ -189,4 +189,8 @@ public abstract sealed class Parser<Result extends Node> extends Source
         return new CheckedSource(this);
     }
 
+    protected Source source() {
+        return source;
+    }
+
 }

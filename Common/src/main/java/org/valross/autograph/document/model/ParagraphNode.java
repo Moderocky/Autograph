@@ -16,6 +16,10 @@ public record ParagraphNode(Node... nodes) implements MultiNode, ModelNode, Reco
         return new Body(nodes);
     }
 
+    public Node overSimplify() {
+        return new Body(nodes);
+    }
+
     @Override
     public HTMElement compile() {
         if (this.isSingleLine()) return StandardElements.P.child(nodes);
