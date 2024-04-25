@@ -1,7 +1,6 @@
 package org.valross.autograph.document;
 
 import org.junit.Test;
-import org.valross.autograph.Autograph;
 import org.valross.autograph.command.CommandDefinition;
 import org.valross.autograph.parser.AutographParser;
 

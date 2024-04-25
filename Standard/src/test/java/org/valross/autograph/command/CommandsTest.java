@@ -57,7 +57,7 @@ public class CommandsTest {
             	<p>and <i>this</i> is in italics!</p>
             	<article>
             		<p>this command is on its own, so it gets its own box!</p>
-            		<p>and it's in like a lil space idk</p>
+            		<p>and it&apos;s in like a lil space idk</p>
             	</article>
             </body>""";
         final Document document = Autograph.parse(source, Commands.standard());

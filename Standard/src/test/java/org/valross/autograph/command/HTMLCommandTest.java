@@ -10,7 +10,7 @@ public class HTMLCommandTest extends DOMTest {
 
     @Test
     public void noCommand() throws IOException {
-        final String content = "<b>hello there!</b>", expected = "<body><b>hello there!</b></body>";
+        final String content = "<b>hello there!</b>", expected = "<body><p>&lt;b&gt;hello there!&lt;/b&gt;</p></body>";
         final Document document = this.parse(new AutographParser(content, Commands.standard()));
         this.test(expected, document);
     }
