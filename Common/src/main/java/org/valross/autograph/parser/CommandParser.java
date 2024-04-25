@@ -20,7 +20,7 @@ public abstract class CommandParser<Result extends Node> extends ElementParser<R
      */
     protected String nextArgument() {
         try (SimpleArgumentParser parser = this.delegate(SimpleArgumentParser::new)) {
-            return parser.read();
+            return parser.readAll();
         }
     }
 

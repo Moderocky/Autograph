@@ -42,7 +42,7 @@ public abstract sealed class Parser<Result extends Node> extends Source
 
     public abstract CommandDefinition[] commands();
 
-    private void read() throws IOException {
+    private void readChar() throws IOException {
         //<editor-fold desc="Store the next (unescaped) character" defaultstate="collapsed">
         if (closed) {
             this.current = -1;
@@ -56,7 +56,7 @@ public abstract sealed class Parser<Result extends Node> extends Source
                 this.current = -1;
                 return;
             }
-            this.current = source.readChar();
+            this.current = source.read();
             switch (current) {
                 case -1:
                     this.closed = true;
@@ -109,7 +109,7 @@ public abstract sealed class Parser<Result extends Node> extends Source
         try {
             this.source.mark(4);
             try {
-                return !this.isTerminatingChar(this.source.readChar());
+                return !this.isTerminatingChar(this.source.read());
             } finally {
                 this.source.reset();
             }
@@ -123,7 +123,7 @@ public abstract sealed class Parser<Result extends Node> extends Source
     public Integer next() {
         //<editor-fold desc="Shift next & return current" defaultstate="collapsed">
         try {
-            this.read();
+            this.readChar();
             return current;
         } catch (IOException ex) {
             return current = -1;
@@ -150,28 +150,43 @@ public abstract sealed class Parser<Result extends Node> extends Source
         this.source.reset();
     }
 
-    int readChar() throws IOException {
+    @Override
+    public int read() throws IOException {
         if (closed) return -1;
         if (length >= this.maxLength()) {
             this.closed = true;
             return -1;
         }
-        return source.readChar();
+        return source.read();
     }
 
     @Override
-    void reset() throws IOException {
+    public int read(char[] chars, int offset, int length) throws IOException {
+        return source.read(chars, offset, length);
+    }
+
+    @Override
+    public void reset() throws IOException {
         this.source.reset();
     }
 
     @Override
-    void mark(int readAheadLimit) throws IOException {
+    public void mark(int readAheadLimit) throws IOException {
         this.source.mark(readAheadLimit);
     }
 
     @Override
     public int caret() {
         return source.caret();
+    }
+
+    /**
+     * Wraps this source in a checking reader that pulls characters from its
+     * iterator rather than its read method: i.e. this parser keeps control over
+     * its terminator rather than deferring it to whatever is using it.
+     */
+    public Source checkedSource() {
+        return new CheckedSource(this);
     }
 
 }

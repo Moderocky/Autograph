@@ -12,10 +12,10 @@ public class SimpleArgumentParser extends ArgumentParser<TextNode> {
 
     @Override
     public TextNode parse() {
-        return new TextNode(this.read());
+        return new TextNode(this.readAll());
     }
 
-    public String read() {
+    public String readAll() {
         final StringBuilder builder = new StringBuilder();
         for (int c : this) {
             builder.append((char) c);
