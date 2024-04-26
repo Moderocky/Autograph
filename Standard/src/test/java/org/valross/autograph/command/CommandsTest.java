@@ -9,6 +9,11 @@ import java.io.IOException;
 public class CommandsTest extends DOMTest {
 
     @Test
+    public void comment() throws IOException {
+        this.test("&comment(foo bar something something)", "<body></body>");
+    }
+
+    @Test
     public void i() throws IOException {
         final String content = "&i(foo)", expected = "<body><i>foo</i></body>";
         final Document document = this.parse(new AutographParser(content, Commands.standard()));
@@ -82,7 +87,8 @@ public class CommandsTest extends DOMTest {
 
     @Test
     public void article() throws IOException {
-        final String content = "&article(foo)", expected = "<body><article class=\"ag-article\"><p>foo</p></article></body>";
+        final String content = "&article(foo)", expected = "<body><article class=\"ag-article\"><p>foo</p></article" +
+            "></body>";
         final Document document = this.parse(new AutographParser(content, Commands.standard()));
         this.test(expected, document);
     }
@@ -152,20 +158,31 @@ public class CommandsTest extends DOMTest {
 
     @Test
     public void footnote() throws IOException {
-        this.test("&article(A bold claim!&footnote(ok maybe not)\n\n&footer(references:))", "<body><article class=\"ag-article\"><p>A bold claim!<sup class=\"ag-reference\"><a href=\"#footnote-45ed3e14\">1</a></sup></p><footer class=\"ag-footer\"><p>references:</p><dl class=\"ag-footnote\" id=\"footnote-45ed3e14\"><dt>1</dt><dd><p>ok maybe not</p></dd></dl></footer></article></body>");
-        this.test("&article(&cite(&footnote(ok maybe not), A bold claim!)\n\n&footer(references:))", "<body><article class=\"ag-article\"><q class=\"ag-citation\">A bold claim!<sup class=\"ag-reference\"><a href=\"#footnote-45ed3e14\">1</a></sup></q><footer class=\"ag-footer\"><p>references:</p><dl class=\"ag-footnote\" id=\"footnote-45ed3e14\"><dt>1</dt><dd><p>ok maybe not</p></dd></dl></footer></article></body>");
+        this.test("&article(A bold claim!&footnote(ok maybe not)\n\n&footer(references:))", "<body><article " +
+            "class=\"ag-article\"><p>A bold claim!<sup class=\"ag-reference\"><a " +
+            "href=\"#footnote-45ed3e14\">1</a></sup></p><footer class=\"ag-footer\"><p>references:</p><dl " +
+            "class=\"ag-footnote\" id=\"footnote-45ed3e14\"><dt>1</dt><dd><p>ok maybe " +
+            "not</p></dd></dl></footer></article></body>");
+        this.test("&article(&cite(&footnote(ok maybe not), A bold claim!)\n\n&footer(references:))", "<body><article " +
+            "class=\"ag-article\"><q class=\"ag-citation\">A bold claim!<sup class=\"ag-reference\"><a " +
+            "href=\"#footnote-45ed3e14\">1</a></sup></q><footer class=\"ag-footer\"><p>references:</p><dl " +
+            "class=\"ag-footnote\" id=\"footnote-45ed3e14\"><dt>1</dt><dd><p>ok maybe " +
+            "not</p></dd></dl></footer></article></body>");
     }
 
     @Test
     public void footer() throws IOException {
         this.test("&footer(foo)", "<body><footer class=\"ag-footer\"><p>foo</p></footer></body>");
-        this.test("&article(&footer(foo))", "<body><article class=\"ag-article\"><footer class=\"ag-footer\"><p>foo</p></footer></article></body>");
+        this.test("&article(&footer(foo))", "<body><article class=\"ag-article\"><footer " +
+            "class=\"ag-footer\"><p>foo</p></footer></article></body>");
 
     }
+
     @Test
     public void header() throws IOException {
         this.test("&header(foo)", "<body><header><p>foo</p></header></body>");
-        this.test("&article(&header(foo))", "<body><article class=\"ag-article\"><header><p>foo</p></header></article></body>");
+        this.test("&article(&header(foo))", "<body><article class=\"ag-article\"><header><p>foo</p></header></article" +
+            "></body>");
     }
 
 }

@@ -12,6 +12,7 @@ import java.util.Arrays;
 
 public final class Commands {
 
+    public static final CommandDefinition COMMENT = new CommandDefinition("comment", CommentCommand::new);
     public static final CommandDefinition ASIDE = blockCommand(StandardElements.ASIDE);
     public static final CommandDefinition BOLD = inlineCommand(StandardElements.B),
         ITALIC = inlineCommand(StandardElements.I),
@@ -34,6 +35,7 @@ public final class Commands {
         FOOTNOTE = new CommandDefinition("footnote", FootnoteCommand::new);
 
     private static final CommandDefinition[] commands = new CommandDefinition[] {
+        COMMENT,
         BOLD,
         ITALIC,
         UNDERLINE,
