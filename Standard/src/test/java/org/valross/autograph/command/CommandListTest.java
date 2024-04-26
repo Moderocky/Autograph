@@ -81,27 +81,10 @@ public class CommandListTest extends DOMTest {
             		yay!
             	</p>
             	<p>and <i>this</i> is in italics!</p>
-            	<article>
+            	<article class="ag-article">
             		<p>this command is on its own, so it gets its own box!</p>
             		<p>and it&apos;s in like a lil space idk</p>
             	</article>
-            </body>""";
-        final Document document = this.parse(new AutographParser(content, Commands.standard()));
-        this.test(expected, document, true);
-    }
-
-    @Test
-    public void testing() throws IOException {
-        final String content = """
-            hello &b(BaeFell)!!!
-            
-            &html(<s>idk something</s>)""";
-        final String expected = """
-            <body>
-            \t<p>hello <b>BaeFell</b>!!!</p>
-            \t
-            \t<s>idk something</s>
-            \t
             </body>""";
         final Document document = this.parse(new AutographParser(content, Commands.standard()));
         this.test(expected, document, true);

@@ -18,7 +18,7 @@ public class ArticleCommand extends HTMCommandParser {
 
     @Override
     public HTMNode parse() throws IOException {
-        return new HTMNode(StandardElements.ARTICLE, this.consume());
+        return new HTMNode(StandardElements.ARTICLE.classes("ag-article"), this.consume());
     }
 
     @Override
