@@ -7,6 +7,7 @@ import org.valross.constantine.RecordConstant;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 public record Body(Node... nodes) implements RecordConstant, MultiNode {
 
@@ -43,6 +44,11 @@ public record Body(Node... nodes) implements RecordConstant, MultiNode {
     public boolean isBlank() {
         return nodes.length == 0
             || (nodes.length == 1 && nodes[0] instanceof TextNode node && node.value().isBlank());
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(nodes);
     }
 
 }

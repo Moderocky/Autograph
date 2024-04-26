@@ -29,7 +29,8 @@ public class FootnoteCommand extends HTMCommandParser {
         } while (this.hasNext());
         final int index = article.footnotes.size() + 1;
         final Node[] contents = this.nodes();
-        final String id = "footnote-" + Integer.toHexString(index ^ Arrays.hashCode(contents));
+        final int hash = Arrays.hashCode(contents);
+        final String id = "footnote-" + Integer.toHexString(index ^ hash);
         final HTMElement list = StandardElements.DL.classes("ag-footnote").id(id);
         final HTMElement title = StandardElements.DT.write(String.valueOf(index));
         final HTMNode footnote = new HTMNode(StandardElements.DD, contents);

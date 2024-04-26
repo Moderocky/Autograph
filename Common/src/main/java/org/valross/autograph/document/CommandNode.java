@@ -18,4 +18,9 @@ public record CommandNode(String command, Node node) implements Node, RecordCons
         this.node.write(stream, charset);
     }
 
+    @Override
+    public int hashCode() {
+        return node.hashCode();
+    }
+
 }

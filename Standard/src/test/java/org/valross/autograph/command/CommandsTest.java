@@ -175,7 +175,12 @@ public class CommandsTest extends DOMTest {
         this.test("&footer(foo)", "<body><footer class=\"ag-footer\"><p>foo</p></footer></body>");
         this.test("&article(&footer(foo))", "<body><article class=\"ag-article\"><footer " +
             "class=\"ag-footer\"><p>foo</p></footer></article></body>");
-
+        this.test("""
+                      &article(
+                          ...as stated in my previous publication.&footnote(&i(The Odyssey), Homer, 800BC)
+                         \s
+                          &footer(References:)
+                      )""", "<body><article class=\"ag-article\"><p>...as stated in my previous publication.<sup class=\"ag-reference\"><a href=\"#footnote-ebb08fe6\">1</a></sup></p><footer class=\"ag-footer\"><p>References:</p><dl class=\"ag-footnote\" id=\"footnote-ebb08fe6\"><dt>1</dt><dd><p><i>The Odyssey</i>, Homer, 800BC</p></dd></dl></footer></article></body>");
     }
 
     @Test

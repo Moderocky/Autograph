@@ -46,7 +46,8 @@ public class TextAreaParser extends ElementParser<Node> implements MultiNodePars
             if (this.isTerminatingChar(c)) break;
             switch (c) {
                 case '&':
-                    this.addTextNode(text.toString());
+                    final String string = text.toString();
+                    if (!nodes.isEmpty() || !string.isBlank()) this.addTextNode(string);
                     try (LocalCommandParser parser = this.delegate(LocalCommandParser::new)) {
                         this.addNode(parser.parse());
                     } catch (IOException ex) {
