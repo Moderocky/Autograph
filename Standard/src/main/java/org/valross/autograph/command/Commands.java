@@ -8,7 +8,9 @@ import org.valross.autograph.document.model.ParagraphNode;
 import org.valross.autograph.parser.Source;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 public final class Commands {
 
@@ -62,6 +64,34 @@ public final class Commands {
         return Arrays.copyOf(commands, commands.length);
     }
 
+    /**
+     * The standard commands set, with additional wrapping commands added for every HTML element.
+     * Generated commands will not override standard ones.
+     *
+     * @return A new array of generated commands
+     */
+    public static CommandDefinition[] standardHTML() {
+        final Set<CommandDefinition> commands = new LinkedHashSet<>(List.of(Commands.commands));
+        final List<HTMElement> list = new ArrayList<>();
+        for (final Field field : StandardElements.class.getDeclaredFields()) {
+            if (!Modifier.isStatic(field.getModifiers())) continue;
+            if (!HTMElement.class.isAssignableFrom(field.getType())) continue;
+            try {
+                list.add(((HTMElement) field.get(null)));
+            } catch (IllegalAccessException _) {
+            }
+        }
+        for (HTMElement element : list) {
+            if (element.isSingle()) continue;
+            final CommandDefinition definition;
+            if (element.isSingle()) definition = singleCommand(element.getTag(), element);
+            else if (element.isInline()) definition = inlineCommand(element);
+            else definition = blockCommand(element);
+            commands.add(definition);
+        }
+        return commands.toArray(new CommandDefinition[0]);
+    }
+
     public static CommandDefinition[] formatting() {
         return new CommandDefinition[] {BOLD, ITALIC, UNDERLINE, STRIKETHROUGH, QUOTE};
     }
@@ -112,6 +142,26 @@ public final class Commands {
             @Override
             public HTMNode parse() throws IOException {
                 return new HTMNode(tag, this.consume());
+            }
+
+        }
+        //</editor-fold>
+        return new CommandDefinition(name, StaticCommandParser::new);
+    }
+
+    private static CommandDefinition singleCommand(String name, HTMElement tag) {
+        //<editor-fold desc="Fake command parser using the tag" defaultstate="collapsed">
+        class StaticCommandParser extends HTMCommandParser {
+
+            public StaticCommandParser(Source source, CommandDefinition... commands) {
+                super(source, commands);
+            }
+
+            @Override
+            public HTMNode parse() {
+                //noinspection StatementWithEmptyBody
+                while (this.next() != -1) ;
+                return new HTMNode(tag);
             }
 
         }

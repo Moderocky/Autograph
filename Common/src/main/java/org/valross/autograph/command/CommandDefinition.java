@@ -5,6 +5,7 @@ import org.valross.autograph.parser.ElementParser;
 import org.valross.autograph.parser.Source;
 import org.valross.autograph.parser.command.SimpleCommandParser;
 
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 public record CommandDefinition(String command, ParserSupplier parser) {
@@ -28,6 +29,18 @@ public record CommandDefinition(String command, ParserSupplier parser) {
     @Override
     public String toString() {
         return "&" + command;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CommandDefinition that)) return false;
+        return Objects.equals(command, that.command) ;
+    }
+
+    @Override
+    public int hashCode() {
+        return command.hashCode();
     }
 
 }
