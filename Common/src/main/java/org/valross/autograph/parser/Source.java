@@ -9,13 +9,24 @@ public abstract sealed class Source extends Reader implements Closeable permits 
 
     public abstract int read() throws IOException;
 
-    public abstract void reset() throws IOException;
+    public abstract int read(char[] chars, int offset, int length) throws IOException;
 
     public abstract void mark(int readAheadLimit) throws IOException;
 
+    public abstract void reset() throws IOException;
+
     public abstract int caret();
 
-    public abstract int read(char[] chars, int offset, int length) throws IOException;
+    public abstract Source source();
+
+    public <Found extends Source> Found findOuter(Class<Found> type) {
+        Source source = this;
+        do {
+            if (type.isInstance(source)) return type.cast(source);
+            source = source.source();
+        } while (!(source instanceof ReaderSource));
+        return null;
+    }
 
 }
 
@@ -38,11 +49,6 @@ final class CheckedSource extends Source {
     }
 
     @Override
-    public void close() throws IOException {
-        this.parser.close();
-    }
-
-    @Override
     public void mark(int readAheadLimit) throws IOException {
         this.parser.mark(readAheadLimit);
     }
@@ -55,6 +61,16 @@ final class CheckedSource extends Source {
     @Override
     public int read(char[] chars, int offset, int length) throws IOException {
         return parser.read(chars, offset, length);
+    }
+
+    @Override
+    public Source source() {
+        return parser;
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.parser.close();
     }
 
 }
@@ -109,6 +125,17 @@ final class ReaderSource extends Source {
                 this.mark = limit = 0;
             }
         }
+    }
+
+    @Override
+    public Source source() {
+        return this;
+    }
+
+    @Override
+    public <Found extends Source> Found findOuter(Class<Found> type) {
+        if (type.isInstance(this)) return type.cast(this);
+        return null;
     }
 
     @Override

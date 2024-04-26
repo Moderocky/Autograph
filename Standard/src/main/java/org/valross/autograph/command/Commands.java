@@ -12,7 +12,6 @@ import java.util.Arrays;
 
 public final class Commands {
 
-    public static final CommandDefinition ARTICLE = blockCommand(StandardElements.ARTICLE);
     public static final CommandDefinition ASIDE = blockCommand(StandardElements.ASIDE);
     public static final CommandDefinition BOLD = inlineCommand(StandardElements.B),
         ITALIC = inlineCommand(StandardElements.I),
@@ -23,12 +22,16 @@ public final class Commands {
         ROW = inlineCommand("row", StandardElements.TR),
         CELL = inlineCommand("cell", StandardElements.TD);
     public static final CommandDefinition BLOCK_QUOTE = blockCommand("quote", StandardElements.BLOCKQUOTE);
-    public static final CommandDefinition CITE = new CommandDefinition("cite", CiteCommand::new);
     public static final CommandDefinition LINK = new CommandDefinition("link", LinkCommand::new);
     public static final CommandDefinition HTML = new CommandDefinition("html", HTMLCommand::new);
     public static final CommandDefinition SOFT_TABLE = new CommandDefinition("softTable", SoftTableCommand::new);
     public static final CommandDefinition CODE = new CommandDefinition("code", CodeCommand::new);
     public static final CommandDefinition CODE_BLOCK = new CommandDefinition("codeBlock", CodeBlockCommand::new);
+    public static final CommandDefinition ARTICLE = new CommandDefinition("article", ArticleCommand::new),
+        HEADER = blockCommand(StandardElements.HEADER),
+        FOOTER = new CommandDefinition("footer", FooterCommand::new),
+        CITE = new CommandDefinition("cite", CiteCommand::new),
+        FOOTNOTE = new CommandDefinition("footnote", FootnoteCommand::new);
 
     private static final CommandDefinition[] commands = new CommandDefinition[] {
         BOLD,
@@ -36,10 +39,8 @@ public final class Commands {
         UNDERLINE,
         STRIKETHROUGH,
         QUOTE,
-        ARTICLE,
         ASIDE,
         BLOCK_QUOTE,
-        CITE,
         LINK,
         HTML,
         TABLE,
@@ -47,7 +48,12 @@ public final class Commands {
         CELL,
         SOFT_TABLE,
         CODE,
-        CODE_BLOCK
+        CODE_BLOCK,
+        ARTICLE,
+        HEADER,
+        FOOTER,
+        CITE,
+        FOOTNOTE
     };
 
     public static CommandDefinition[] standard() {

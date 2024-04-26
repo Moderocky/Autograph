@@ -67,11 +67,10 @@ public class SoftTableCommand extends HTMCommandParser {
         @Override
         public Body parse() throws IOException {
             this.consumeWhitespace();
-            final List<Node> nodes = new ArrayList<>();
             do try (InnerTextParser parser = this.delegate(InnerTextParser::new)) {
-                nodes.add(parser.parse());
+                this.addNode(parser.parse());
             } while (this.hasNext());
-            return new Body(nodes.toArray(new Node[0]));
+            return new Body(this.nodes());
         }
 
     }

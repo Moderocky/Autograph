@@ -37,4 +37,8 @@ public abstract class HTMCommandParser extends CommandParser<HTMNode> implements
         return nodes.toArray(new Node[0]);
     }
 
+    protected List<Node> getNodes() {
+        return nodes;
+    }
+
 }

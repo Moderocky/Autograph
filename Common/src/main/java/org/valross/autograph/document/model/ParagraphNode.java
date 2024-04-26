@@ -5,6 +5,8 @@ import mx.kenzie.hypertext.element.StandardElements;
 import org.valross.autograph.document.*;
 import org.valross.constantine.RecordConstant;
 
+import java.util.Arrays;
+
 public record ParagraphNode(Node... nodes) implements MultiNode, ModelNode, RecordConstant {
 
     public ParagraphNode(String text) {
@@ -26,10 +28,25 @@ public record ParagraphNode(Node... nodes) implements MultiNode, ModelNode, Reco
         return new Body(nodes);
     }
 
+    public Node unwrap() {
+        if (nodes.length == 1 && nodes[0] instanceof TextNode node) return node;
+        return this.overSimplify();
+    }
+
     @Override
     public HTMElement compile() {
         if (this.isSingleLine()) return StandardElements.P.child(nodes);
         return StandardElements.P.block().child(nodes);
+    }
+
+    @Override
+    public boolean isSingleLine() {
+        return MultiNode.super.isSingleLine();
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(this.nodes);
     }
 
     @Override

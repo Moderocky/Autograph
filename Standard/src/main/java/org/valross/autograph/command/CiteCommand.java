@@ -2,14 +2,15 @@ package org.valross.autograph.command;
 
 import mx.kenzie.hypertext.element.HTMElement;
 import mx.kenzie.hypertext.element.StandardElements;
+import org.valross.autograph.document.Body;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.document.model.HTMNode;
+import org.valross.autograph.document.model.ParagraphNode;
 import org.valross.autograph.error.CommandException;
 import org.valross.autograph.parser.Source;
+import org.valross.autograph.parser.command.ArgumentParser;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CiteCommand extends HTMCommandParser {
 
@@ -18,19 +19,46 @@ public class CiteCommand extends HTMCommandParser {
     }
 
     @Override
-    public HTMNode parse() throws IOException { // todo maybe footnotes???
-        final String href = this.nextArgument();
-        if (href.isBlank()) throw new CommandException("Citation was blank", this);
-        if (((int) this.next()) != ',') throw new CommandException("Citation requires second (quote) argument", this);
+    public HTMNode parse() throws IOException {
+        final Body citation;
+        try (ReferenceParser delegate = this.delegate(ReferenceParser::new)) {
+            citation = delegate.parse();
+        }
+        if (citation.isBlank()) throw new CommandException("Citation was blank", this);
+        if (this.next() != ',') throw new CommandException("Citation requires second (quote) argument", this);
         this.consumeWhitespace();
-        final List<Node> nodes = new ArrayList<>();
         do try (InnerTextParser parser = this.delegate(InnerTextParser::new)) {
-            nodes.add(parser.parse());
+            this.addNode(parser.parse());
         } while (this.hasNext());
         final HTMElement quote;
-        if (nodes.size() > 1) quote = StandardElements.BLOCKQUOTE.classes("ag-citation").set("cite", href);
-        else quote = StandardElements.Q.classes("ag-citation").set("cite", href);
-        return new HTMNode(quote, nodes.toArray(new Node[0]));
+        if (this.getNodes().size() > 1 || !this.getNodes().getFirst().isSingleLine())
+            quote = StandardElements.BLOCKQUOTE.classes("ag-citation");
+        else {
+            quote = StandardElements.Q.classes("ag-citation");
+            if (this.getNodes().getFirst() instanceof ParagraphNode node)
+                this.getNodes().set(0, node.unwrap());
+        }
+        if (citation.isText()) quote.set("cite", citation.asText().value());
+        else this.addNode(citation);
+        final Node[] nodes = this.nodes();
+        return new HTMNode(quote, nodes);
+    }
+
+    static class ReferenceParser extends ArgumentParser<Node> {
+
+        public ReferenceParser(Source source, CommandDefinition... commands) {
+            super(source, commands);
+        }
+
+        @Override
+        public Body parse() throws IOException {
+            this.consumeWhitespace();
+            do try (InnerTextParser parser = this.delegate(InnerTextParser::new)) {
+                this.addNode(parser.parse());
+            } while (this.hasNext());
+            return new Body(this.nodes());
+        }
+
     }
 
 }

@@ -25,11 +25,10 @@ public class LinkCommand extends HTMCommandParser {
         switch ((int) this.next()) {
             case ',':
                 this.consumeWhitespace();
-                final List<Node> nodes = new ArrayList<>();
                 do try (InnerTextParser parser = this.delegate(InnerTextParser::new)) {
-                    nodes.add(parser.parse());
+                    this.addNode(parser.parse());
                 } while (this.hasNext());
-                return new HTMNode(link, nodes.toArray(new Node[0]));
+                return new HTMNode(link, this.nodes());
             default:
                 return new HTMNode(link.child(new TextNode(href)));
         }

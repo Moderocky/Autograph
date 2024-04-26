@@ -166,18 +166,22 @@ public abstract sealed class Parser<Result extends Node> extends Source
     }
 
     @Override
-    public void reset() throws IOException {
-        this.source.reset();
-    }
-
-    @Override
     public void mark(int readAheadLimit) throws IOException {
         this.source.mark(readAheadLimit);
     }
 
     @Override
+    public void reset() throws IOException {
+        this.source.reset();
+    }
+
+    @Override
     public int caret() {
         return source.caret();
+    }
+
+    public Source source() {
+        return source;
     }
 
     /**
@@ -187,10 +191,6 @@ public abstract sealed class Parser<Result extends Node> extends Source
      */
     public Source checkedSource() {
         return new CheckedSource(this);
-    }
-
-    protected Source source() {
-        return source;
     }
 
 }

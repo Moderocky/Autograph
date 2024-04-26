@@ -62,4 +62,14 @@ public record TextNode(String value) implements Node, RecordConstant {
         return value.indexOf('\n') == -1;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return value.isEmpty();
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
 }

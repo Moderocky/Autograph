@@ -1,14 +1,16 @@
 package org.valross.autograph.document.model;
 
+import mx.kenzie.hypertext.Writable;
 import mx.kenzie.hypertext.element.HTMElement;
 import org.valross.autograph.document.ModelNode;
-import org.valross.autograph.document.Node;
 
 import java.lang.constant.Constable;
+import java.util.Arrays;
+import java.util.Objects;
 
-public record HTMNode(HTMElement element, Node... contents) implements ModelNode {
+public record HTMNode(HTMElement element, Writable... contents) implements ModelNode {
 
-    public HTMNode(HTMElement element, Node... contents) {
+    public HTMNode(HTMElement element, Writable... contents) {
         this.element = element.working();
         this.contents = contents;
     }
@@ -32,6 +34,11 @@ public record HTMNode(HTMElement element, Node... contents) implements ModelNode
     @Override
     public String toString() {
         return "<" + element.getTag() + ">[" + String.join(", ", contents) + ']';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(element.getTag(), Arrays.hashCode(contents));
     }
 
 }
