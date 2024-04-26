@@ -7,6 +7,7 @@ import org.valross.autograph.document.model.HTMNode;
 import org.valross.autograph.error.CommandException;
 import org.valross.autograph.parser.Source;
 import org.valross.autograph.parser.command.ArgumentParser;
+import org.valross.autograph.parser.command.ContentParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class SoftTableCommand extends HTMCommandParser {
                 case ')', ',': break;
                 default: this.stowChar();
             }
-            try (TableCellParser parser = this.delegate(TableCellParser::new)) {
+            try (ContentParser parser = this.delegate(ContentParser::new)) {
                 entries.addLast(parser.parse());
             }
         } while (this.hasNext());
@@ -56,23 +57,6 @@ public class SoftTableCommand extends HTMCommandParser {
     private Node[] next(LinkedList<Body> entries) {
         if (entries.isEmpty()) return new Node[0];
         return entries.pop().nodes();
-    }
-
-    static class TableCellParser extends ArgumentParser<Body> {
-
-        public TableCellParser(Source source, CommandDefinition... commands) {
-            super(source, commands);
-        }
-
-        @Override
-        public Body parse() throws IOException {
-            this.consumeWhitespace();
-            do try (InnerTextParser parser = this.delegate(InnerTextParser::new)) {
-                this.addNode(parser.parse());
-            } while (this.hasNext());
-            return new Body(this.nodes());
-        }
-
     }
 
 }

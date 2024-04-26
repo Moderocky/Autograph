@@ -153,7 +153,8 @@ public class CommandsTest extends DOMTest {
         this.test("&cite(https://foo, my &b(cool) thing)", "<body><q cite=\"https://foo\" class=\"ag-citation\">my" +
             " <b>cool</b> thing<span class=\"ag-source\"><p>https://foo</p></span></q></body>");
         this.test("&cite(https://foo, my\n\ncool\n\nthing)", "<body><blockquote cite=\"https://foo\" " +
-            "class=\"ag-citation\"><p>my</p><p>cool</p><p>thing</p><span class=\"ag-source\"><p>https://foo</p></span></blockquote></body>");
+            "class=\"ag-citation\"><p>my</p><p>cool</p><p>thing</p><span " +
+            "class=\"ag-source\"><p>https://foo</p></span></blockquote></body>");
     }
 
     @Test
@@ -187,10 +188,10 @@ public class CommandsTest extends DOMTest {
                          \s
                           &footer(References:)
                       )""", "<body><article class=\"ag-article\"><p>...as stated in my previous publication.<sup " +
-            "class=\"ag-reference\"><a href=\"#footnote-ebb08fe6\">1</a></sup></p><footer " +
-            "class=\"ag-footer\"><p>References:</p><dl class=\"ag-footnote\" " +
-            "id=\"footnote-ebb08fe6\"><dt>1</dt><dd><p><i>The Odyssey</i>, Homer, " +
-            "800BC</p></dd></dl></footer></article></body>");
+                      "class=\"ag-reference\"><a href=\"#footnote-ebb08fe6\">1</a></sup></p><footer " +
+                      "class=\"ag-footer\"><p>References:</p><dl class=\"ag-footnote\" " +
+                      "id=\"footnote-ebb08fe6\"><dt>1</dt><dd><p><i>The Odyssey</i>, Homer, " +
+                      "800BC</p></dd></dl></footer></article></body>");
     }
 
     @Test
@@ -198,6 +199,29 @@ public class CommandsTest extends DOMTest {
         this.test("&header(foo)", "<body><header><p>foo</p></header></body>");
         this.test("&article(&header(foo))", "<body><article class=\"ag-article\"><header><p>foo</p></header></article" +
             "></body>");
+    }
+
+    @Test
+    public void ruby() throws IOException {
+        this.test("&ruby(hello, there)", "<body><ruby><p>there</p><rt>hello</rt></ruby></body>");
+    }
+
+    @Test
+    public void details() throws IOException {
+        this.test("&details(test)", "<body><details><p>test</p></details></body>");
+        this.test("&details(&summary(foo)\n\nsomething else)", "<body><details><summary><p>foo</p></summary><p>something else</p></details></body>");
+    }
+
+    @Test
+    public void summary() throws IOException {
+        this.test("&details(&summary(foo)\n\nsomething else)", "<body><details><summary><p>foo</p></summary><p>something else</p></details></body>");
+    }
+
+    @Test
+    public void em() throws IOException {
+        this.test("&em(testing thing)", "<body><em>testing thing</em></body>");
+        this.test("this is &em(very) good", "<body><p>this is <em>very</em> good</p></body>");
+        this.test("&em(&i(testing) &b(thing))", "<body><em><i>testing</i> <b>thing</b></em></body>");
     }
 
 }

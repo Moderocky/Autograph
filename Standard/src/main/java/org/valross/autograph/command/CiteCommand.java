@@ -10,6 +10,7 @@ import org.valross.autograph.document.model.ParagraphNode;
 import org.valross.autograph.error.CommandException;
 import org.valross.autograph.parser.Source;
 import org.valross.autograph.parser.command.ArgumentParser;
+import org.valross.autograph.parser.command.ContentParser;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +24,7 @@ public class CiteCommand extends HTMCommandParser {
     @Override
     public HTMNode parse() throws IOException {
         final Body citation;
-        try (ReferenceParser delegate = this.delegate(ReferenceParser::new)) {
+        try (ContentParser delegate = this.delegate(ContentParser::new)) {
             citation = delegate.parse();
         }
         if (citation.isBlank()) throw new CommandException("Citation was blank", this);
@@ -58,23 +59,6 @@ public class CiteCommand extends HTMCommandParser {
             return false;
         }
         return true;
-    }
-
-    static class ReferenceParser extends ArgumentParser<Node> {
-
-        public ReferenceParser(Source source, CommandDefinition... commands) {
-            super(source, commands);
-        }
-
-        @Override
-        public Body parse() throws IOException {
-            this.consumeWhitespace();
-            do try (InnerTextParser parser = this.delegate(InnerTextParser::new)) {
-                this.addNode(parser.parse());
-            } while (this.hasNext());
-            return new Body(this.nodes());
-        }
-
     }
 
 }

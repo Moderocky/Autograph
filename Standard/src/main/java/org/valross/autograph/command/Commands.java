@@ -20,16 +20,20 @@ public final class Commands {
         ITALIC = inlineCommand(StandardElements.I),
         UNDERLINE = inlineCommand(StandardElements.U),
         STRIKETHROUGH = inlineCommand(StandardElements.S),
-        QUOTE = inlineCommand(StandardElements.Q);
+        QUOTE = inlineCommand(StandardElements.Q),
+        EMPHASIS = inlineCommand(StandardElements.EM);
     public static final CommandDefinition TABLE = blockCommand(StandardElements.TABLE),
         ROW = inlineCommand("row", StandardElements.TR),
         CELL = inlineCommand("cell", StandardElements.TD);
+    public static final CommandDefinition DETAILS = blockCommand(StandardElements.DETAILS),
+        SUMMARY = blockCommand(StandardElements.SUMMARY);
     public static final CommandDefinition BLOCK_QUOTE = blockCommand("quote", StandardElements.BLOCKQUOTE);
     public static final CommandDefinition LINK = new CommandDefinition("link", LinkCommand::new);
     public static final CommandDefinition HTML = new CommandDefinition("html", HTMLCommand::new);
     public static final CommandDefinition SOFT_TABLE = new CommandDefinition("softTable", SoftTableCommand::new);
     public static final CommandDefinition CODE = new CommandDefinition("code", CodeCommand::new);
     public static final CommandDefinition CODE_BLOCK = new CommandDefinition("codeBlock", CodeBlockCommand::new);
+    public static final CommandDefinition RUBY = new CommandDefinition("ruby", RubyCommand::new);
     public static final CommandDefinition ARTICLE = new CommandDefinition("article", ArticleCommand::new),
         HEADER = blockCommand(StandardElements.HEADER),
         FOOTER = new CommandDefinition("footer", FooterCommand::new),
@@ -42,7 +46,11 @@ public final class Commands {
         ITALIC,
         UNDERLINE,
         STRIKETHROUGH,
+        RUBY,
         QUOTE,
+        EMPHASIS,
+        DETAILS,
+        SUMMARY,
         ASIDE,
         BLOCK_QUOTE,
         LINK,

@@ -57,6 +57,7 @@ These commands can contain text (and other commands).
 | `&u()`    | Underline                              | `<u>`    |
 | `&s()`    | Strikethrough                          | `<s>`    |
 | `&q()`    | Quotation (inline)                     | `<q>`    |
+| `&em()`   | Emphasis (for screen reader)           | `<em>`   |
 | `&code()` | Code well: permits (balanced) brackets | `<code>` |
 
 ## Block Elements
@@ -69,6 +70,8 @@ These commands are designed to take in multi-line content sections (and other co
 | `&article()`   | An article section                           | `<article>`      |
 | `&quote()`     | A quote block                                | `<blockquote>`   |
 | `&codeBlock()` | Code block well: permits (balanced) brackets | `<pre>` `<code>` |
+| `&details()`   | Collapsible details block.                   | `<details>`      |
+| `&summary()`   | Details block summary.                       | `<summary>`      |
 
 Note: the `&code` and `&codeBlock` commands permit unescaped `(` parentheses `)`,
 **as long as** they are balanced.
@@ -100,6 +103,17 @@ The text inside the tag is the link itself.
 If a second argument is provided, the `&link(https://url, content here)` command acts as an anchor `<a>`
 tag with an `href`.
 The content inside the tag is the second argument of the command.
+
+### `&ruby`
+
+The `&ruby(superscript, subscript)` command spreads (miniature) superscript text above regular content.
+This is used for rendering language characters that have superscript modifications.
+
+Two arguments are required: the text to go over the top, and the regular text to go beneath it.
+
+The superscript text is block justified (stretched to fit the width of the element).
+
+**Note**: not all browsers support non-text elements in the superscript.
 
 ### `&html`
 
