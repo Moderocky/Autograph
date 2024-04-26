@@ -3,6 +3,7 @@ package org.valross.autograph.command;
 import mx.kenzie.hypertext.element.HTMElement;
 import mx.kenzie.hypertext.element.StandardElements;
 import org.valross.autograph.document.Body;
+import org.valross.autograph.document.CommandNode;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.document.model.HTMNode;
 import org.valross.autograph.document.model.ParagraphNode;
@@ -11,6 +12,7 @@ import org.valross.autograph.parser.Source;
 import org.valross.autograph.parser.command.ArgumentParser;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CiteCommand extends HTMCommandParser {
 
@@ -38,10 +40,24 @@ public class CiteCommand extends HTMCommandParser {
             if (this.getNodes().getFirst() instanceof ParagraphNode node)
                 this.getNodes().set(0, node.unwrap());
         }
-        if (citation.isText()) quote.set("cite", citation.asText().value());
-        else this.addNode(citation);
-        final Node[] nodes = this.nodes();
+        final Node[] nodes = this.decide(citation, quote);
         return new HTMNode(quote, nodes);
+    }
+
+    private Node[] decide(Body citation, HTMElement quote) {
+        if (citation.isText()) quote.set("cite", citation.asText().value());
+        if (this.areAllFootnotes(citation.nodes()))
+            this.getNodes().addAll(List.of(citation.nodes()));
+        else this.addNode(new HTMNode(StandardElements.SPAN.classes("ag-source"), citation.nodes()));
+        return this.nodes();
+    }
+
+    private boolean areAllFootnotes(Node... nodes) {
+        for (Node node : nodes) {
+            if (node instanceof CommandNode command && command.command().equals("footnote")) continue;
+            return false;
+        }
+        return true;
     }
 
     static class ReferenceParser extends ArgumentParser<Node> {

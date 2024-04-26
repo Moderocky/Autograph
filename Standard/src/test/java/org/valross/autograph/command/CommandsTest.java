@@ -149,11 +149,11 @@ public class CommandsTest extends DOMTest {
     @Test
     public void cite() throws IOException {
         this.test("&cite(https://foo, my thing)", "<body><q cite=\"https://foo\" class=\"ag-citation\">my " +
-            "thing</q></body>");
+            "thing<span class=\"ag-source\"><p>https://foo</p></span></q></body>");
         this.test("&cite(https://foo, my &b(cool) thing)", "<body><q cite=\"https://foo\" class=\"ag-citation\">my" +
-            " <b>cool</b> thing</q></body>");
+            " <b>cool</b> thing<span class=\"ag-source\"><p>https://foo</p></span></q></body>");
         this.test("&cite(https://foo, my\n\ncool\n\nthing)", "<body><blockquote cite=\"https://foo\" " +
-            "class=\"ag-citation\"><p>my</p><p>cool</p><p>thing</p></blockquote></body>");
+            "class=\"ag-citation\"><p>my</p><p>cool</p><p>thing</p><span class=\"ag-source\"><p>https://foo</p></span></blockquote></body>");
     }
 
     @Test
@@ -168,6 +168,12 @@ public class CommandsTest extends DOMTest {
             "href=\"#footnote-45ed3e14\">1</a></sup></q><footer class=\"ag-footer\"><p>references:</p><dl " +
             "class=\"ag-footnote\" id=\"footnote-45ed3e14\"><dt>1</dt><dd><p>ok maybe " +
             "not</p></dd></dl></footer></article></body>");
+        this.test("&article(&cite(&footnote(foo)&footnote(bar), text)\n\n&footer())", "<body><article " +
+            "class=\"ag-article\"><q class=\"ag-citation\">text<span class=\"ag-source\"><sup " +
+            "class=\"ag-reference\"><a href=\"#footnote-18d05\">1</a></sup><sup class=\"ag-reference\"><a " +
+            "href=\"#footnote-17c53\">2</a></sup></span></q><footer class=\"ag-footer\"><dl class=\"ag-footnote\" " +
+            "id=\"footnote-18d05\"><dt>1</dt><dd><p>foo</p></dd></dl><dl class=\"ag-footnote\" " +
+            "id=\"footnote-17c53\"><dt>2</dt><dd><p>bar</p></dd></dl></footer></article></body>");
     }
 
     @Test
@@ -180,7 +186,11 @@ public class CommandsTest extends DOMTest {
                           ...as stated in my previous publication.&footnote(&i(The Odyssey), Homer, 800BC)
                          \s
                           &footer(References:)
-                      )""", "<body><article class=\"ag-article\"><p>...as stated in my previous publication.<sup class=\"ag-reference\"><a href=\"#footnote-ebb08fe6\">1</a></sup></p><footer class=\"ag-footer\"><p>References:</p><dl class=\"ag-footnote\" id=\"footnote-ebb08fe6\"><dt>1</dt><dd><p><i>The Odyssey</i>, Homer, 800BC</p></dd></dl></footer></article></body>");
+                      )""", "<body><article class=\"ag-article\"><p>...as stated in my previous publication.<sup " +
+            "class=\"ag-reference\"><a href=\"#footnote-ebb08fe6\">1</a></sup></p><footer " +
+            "class=\"ag-footer\"><p>References:</p><dl class=\"ag-footnote\" " +
+            "id=\"footnote-ebb08fe6\"><dt>1</dt><dd><p><i>The Odyssey</i>, Homer, " +
+            "800BC</p></dd></dl></footer></article></body>");
     }
 
     @Test
