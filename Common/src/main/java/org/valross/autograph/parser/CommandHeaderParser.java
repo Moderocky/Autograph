@@ -1,28 +1,37 @@
 package org.valross.autograph.parser;
 
 import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.CommandNode;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.error.CommandException;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public abstract class CommandHeaderParser extends ElementParser<CommandNode> {
 
-    private final Map<String, CommandDefinition.ParserSupplier> parsers;
+    private final CommandSet parsers;
 
-    protected CommandHeaderParser(Source source, CommandDefinition... commands) {
+    protected CommandHeaderParser(Source source, CommandSet commands) {
         super(source, commands);
-        this.parsers = new LinkedHashMap<>();
-        for (CommandDefinition command : this.commands()) {
-            this.parsers.put(command.command(), command.parser());
-        }
+        this.parsers = commands;
     }
 
     @Override
     public CommandNode parse() throws IOException {
+        final String text = this.reader();
+        final CommandDefinition.ParserSupplier supplier = parsers.get(text);
+        if (supplier == null) throw new CommandException("Unknown command: &" + text, this);
+        try (ElementParser<? extends Node> parser = this.delegate(supplier)) {
+            final Node parsed = parser.parse();
+            final int next = this.next();
+            if (next != ')')
+                throw new CommandException("Invalid command closer: " + next, this);
+            return new CommandNode(text, parsed);
+        }
+    }
+
+    private String reader() {
         final StringBuilder builder = new StringBuilder();
         read:
         for (int c : this) {
@@ -40,15 +49,7 @@ public abstract class CommandHeaderParser extends ElementParser<CommandNode> {
             }
         }
         final String text = builder.toString().trim().intern();
-        final CommandDefinition.ParserSupplier supplier = parsers.get(text);
-        if (supplier == null) throw new CommandException("Unknown command: &" + text, this);
-        try (ElementParser<? extends Node> parser = this.delegate(supplier)) {
-            final Node parsed = parser.parse();
-            final int next = this.next();
-            if (next != ')')
-                throw new CommandException("Invalid command closer: " + next, this);
-            return new CommandNode(text, parsed);
-        }
+        return text;
     }
 
 }

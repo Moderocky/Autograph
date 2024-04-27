@@ -9,7 +9,6 @@ import org.valross.autograph.document.model.HTMNode;
 import org.valross.autograph.document.model.ParagraphNode;
 import org.valross.autograph.error.CommandException;
 import org.valross.autograph.parser.Source;
-import org.valross.autograph.parser.command.ArgumentParser;
 import org.valross.autograph.parser.command.ContentParser;
 
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class CiteCommand extends HTMCommandParser {
 
-    public CiteCommand(Source source, CommandDefinition... commands) {
+    public CiteCommand(Source source, CommandSet commands) {
         super(source, commands);
     }
 

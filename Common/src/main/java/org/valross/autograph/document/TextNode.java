@@ -26,8 +26,15 @@ public record TextNode(String value) implements Node, RecordConstant {
     }
 
     @Override
-    public String toString() {
-        return value;
+    public void write(OutputStream stream, Charset charset) throws IOException {
+        if (stream instanceof FormattedOutputStream format && !this.isSingleLine()) {
+            final String[] lines = value.split("\n");
+            format.write(lines[0].getBytes(charset));
+            for (int i = 1; i < lines.length; i++) {
+                format.writeLine();
+                format.write(sanitise(lines[i]).getBytes(charset));
+            }
+        } else stream.write(sanitise(value).getBytes(charset));
     }
 
     @Override
@@ -46,18 +53,6 @@ public record TextNode(String value) implements Node, RecordConstant {
     }
 
     @Override
-    public void write(OutputStream stream, Charset charset) throws IOException {
-        if (stream instanceof FormattedOutputStream format && !this.isSingleLine()) {
-            final String[] lines = value.split("\n");
-            format.write(lines[0].getBytes(charset));
-            for (int i = 1; i < lines.length; i++) {
-                format.writeLine();
-                format.write(sanitise(lines[i]).getBytes(charset));
-            }
-        } else stream.write(sanitise(value).getBytes(charset));
-    }
-
-    @Override
     public boolean isSingleLine() {
         return value.indexOf('\n') == -1;
     }
@@ -70,6 +65,11 @@ public record TextNode(String value) implements Node, RecordConstant {
     @Override
     public int hashCode() {
         return value.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 
 }

@@ -10,9 +10,12 @@ import org.valross.autograph.parser.Source;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
-public final class Commands {
+public class Commands {
 
     public static final CommandDefinition COMMENT = new CommandDefinition("comment", CommentCommand::new);
     public static final CommandDefinition ASIDE = blockCommand(StandardElements.ASIDE);
@@ -37,8 +40,8 @@ public final class Commands {
     public static final CommandDefinition ARTICLE = new CommandDefinition("article", ArticleCommand::new),
         HEADER = blockCommand(StandardElements.HEADER),
         FOOTER = new CommandDefinition("footer", FooterCommand::new),
-        CITE = new CommandDefinition("cite", CiteCommand::new),
-        FOOTNOTE = new CommandDefinition("footnote", FootnoteCommand::new);
+        CITE = new CommandDefinition("cite", CiteCommand::new);
+    protected static final CommandDefinition FOOTNOTE = new CommandDefinition("footnote", FootnoteCommand::new);
 
     private static final CommandDefinition[] commands = new CommandDefinition[] {
         COMMENT,
@@ -64,12 +67,11 @@ public final class Commands {
         ARTICLE,
         HEADER,
         FOOTER,
-        CITE,
-        FOOTNOTE
+        CITE
     };
 
-    public static CommandDefinition[] standard() {
-        return Arrays.copyOf(commands, commands.length);
+    public static CommandSet standard() {
+        return CommandSet.of(commands);
     }
 
     /**
@@ -78,7 +80,7 @@ public final class Commands {
      *
      * @return A new array of generated commands
      */
-    public static CommandDefinition[] standardHTML() {
+    public static CommandSet standardHTML() {
         final Set<CommandDefinition> commands = new LinkedHashSet<>(List.of(Commands.commands));
         final List<HTMElement> list = new ArrayList<>();
         for (final Field field : StandardElements.class.getDeclaredFields()) {
@@ -97,15 +99,15 @@ public final class Commands {
             else definition = blockCommand(element);
             commands.add(definition);
         }
-        return commands.toArray(new CommandDefinition[0]);
+        return CommandSet.of(commands.toArray(new CommandDefinition[0]));
     }
 
-    public static CommandDefinition[] formatting() {
-        return new CommandDefinition[] {BOLD, ITALIC, UNDERLINE, STRIKETHROUGH, QUOTE};
+    public static CommandSet formatting() {
+        return CommandSet.of(BOLD, ITALIC, UNDERLINE, STRIKETHROUGH, QUOTE);
     }
 
-    public static CommandDefinition[] tables() {
-        return new CommandDefinition[] {SOFT_TABLE, TABLE, ROW, CELL};
+    public static CommandSet tables() {
+        return CommandSet.of(SOFT_TABLE, TABLE, ROW, CELL);
     }
 
     private static CommandDefinition inlineCommand(HTMElement tag) {
@@ -116,7 +118,7 @@ public final class Commands {
         //<editor-fold desc="Fake command parser using the tag" defaultstate="collapsed">
         class StaticCommandParser extends HTMCommandParser {
 
-            public StaticCommandParser(Source source, CommandDefinition... commands) {
+            public StaticCommandParser(Source source, CommandSet commands) {
                 super(source, commands);
             }
 
@@ -143,7 +145,7 @@ public final class Commands {
         //<editor-fold desc="Fake command parser using the tag" defaultstate="collapsed">
         class StaticCommandParser extends HTMCommandParser {
 
-            public StaticCommandParser(Source source, CommandDefinition... commands) {
+            public StaticCommandParser(Source source, CommandSet commands) {
                 super(source, commands);
             }
 
@@ -161,7 +163,7 @@ public final class Commands {
         //<editor-fold desc="Fake command parser using the tag" defaultstate="collapsed">
         class StaticCommandParser extends HTMCommandParser {
 
-            public StaticCommandParser(Source source, CommandDefinition... commands) {
+            public StaticCommandParser(Source source, CommandSet commands) {
                 super(source, commands);
             }
 
@@ -175,6 +177,10 @@ public final class Commands {
         }
         //</editor-fold>
         return new CommandDefinition(name, StaticCommandParser::new);
+    }
+
+    private Commands() {
+        throw new IllegalStateException("Utility class");
     }
 
 }

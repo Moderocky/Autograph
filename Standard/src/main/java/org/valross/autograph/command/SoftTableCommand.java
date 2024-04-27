@@ -6,17 +6,14 @@ import org.valross.autograph.document.Node;
 import org.valross.autograph.document.model.HTMNode;
 import org.valross.autograph.error.CommandException;
 import org.valross.autograph.parser.Source;
-import org.valross.autograph.parser.command.ArgumentParser;
 import org.valross.autograph.parser.command.ContentParser;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class SoftTableCommand extends HTMCommandParser {
 
-    public SoftTableCommand(Source source, CommandDefinition... commands) {
+    public SoftTableCommand(Source source, CommandSet commands) {
         super(source, commands);
     }
 
@@ -37,8 +34,10 @@ public class SoftTableCommand extends HTMCommandParser {
         final LinkedList<Body> entries = new LinkedList<>();
         do {
             switch ((int) this.next()) {
-                case ')', ',': break;
-                default: this.stowChar();
+                case ')', ',':
+                    break;
+                default:
+                    this.stowChar();
             }
             try (ContentParser parser = this.delegate(ContentParser::new)) {
                 entries.addLast(parser.parse());

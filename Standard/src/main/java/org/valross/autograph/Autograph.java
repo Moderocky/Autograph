@@ -1,7 +1,7 @@
 package org.valross.autograph;
 
 import mx.kenzie.hypertext.PageWriter;
-import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.command.Commands;
 import org.valross.autograph.document.Document;
 import org.valross.autograph.error.AutographException;
@@ -21,7 +21,7 @@ public class Autograph {
         }
     }
 
-    public static Document parse(String source, CommandDefinition... commands) {
+    public static Document parse(String source, CommandSet commands) {
         if (source == null) return new Document();
         try (AutographParser parser = new AutographParser(source, commands)) {
             return parser.parse();
@@ -30,12 +30,12 @@ public class Autograph {
         }
     }
 
-    public static Document parse(InputStream source, CommandDefinition... commands) {
+    public static Document parse(InputStream source, CommandSet commands) {
         if (source == null) return new Document();
         else return parse(new BufferedReader(new InputStreamReader(source)), commands);
     }
 
-    public static Document parse(Reader source, CommandDefinition... commands) {
+    public static Document parse(Reader source, CommandSet commands) {
         if (source == null) return new Document();
         try (AutographParser parser = new AutographParser(source, commands)) {
             return parser.parse();

@@ -16,10 +16,12 @@ import java.util.Set;
 public class CommandListTest extends DOMTest {
 
     private static final Set<CommandDefinition> commands = new HashSet<>();
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         for (Field field : Commands.class.getDeclaredFields()) {
             if (!Modifier.isStatic(field.getModifiers())) continue;
+            if (!Modifier.isPublic(field.getModifiers())) continue;
             if (field.getType() != CommandDefinition.class) continue;
             field.setAccessible(true);
             final boolean added = commands.add((CommandDefinition) field.get(null));
@@ -30,7 +32,7 @@ public class CommandListTest extends DOMTest {
     @Test
     public void checkStandardSet() {
         final Set<CommandDefinition> commands = new HashSet<>(CommandListTest.commands);
-        for (CommandDefinition value : Commands.standard()) {
+        for (CommandDefinition value : Commands.standard().commands()) {
             assert commands.contains(value) : "Unknown " + value;
             final boolean removed = commands.remove(value);
             assert removed;
@@ -53,7 +55,7 @@ public class CommandListTest extends DOMTest {
             for (String name : names) {
                 System.err.println("@Test\npublic void " + name + "() throws IOException {\n\n}");
             }
-            assert false: "Missing tests.";
+            assert false : "Missing tests.";
         }
     }
 

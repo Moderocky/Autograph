@@ -9,7 +9,7 @@ public abstract class BalancedBracketParser extends HTMCommandParser {
 
     private int bracketDepth = 0;
 
-    public BalancedBracketParser(Source source, CommandDefinition... commands) {
+    public BalancedBracketParser(Source source, CommandSet commands) {
         super(source, commands);
     }
 

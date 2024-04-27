@@ -10,7 +10,7 @@ public class FooterCommand extends HTMCommandParser {
 
     protected final ArticleCommand article;
 
-    public FooterCommand(Source source, CommandDefinition... commands) {
+    public FooterCommand(Source source, CommandSet commands) {
         super(source, commands);
         this.article = this.findOuter(ArticleCommand.class);
     }

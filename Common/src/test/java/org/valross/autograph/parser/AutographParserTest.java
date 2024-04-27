@@ -1,6 +1,7 @@
 package org.valross.autograph.parser;
 
 import org.junit.Test;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.Document;
 import org.valross.autograph.document.MultiNode;
 import org.valross.autograph.document.TextNode;
@@ -20,7 +21,7 @@ public class AutographParserTest extends ParserTest {
 
     @Override
     protected AutographParser makeParser(String text) {
-        return new AutographParser(Parser.input(text));
+        return new AutographParser(Parser.input(text), CommandSet.of());
     }
 
 }

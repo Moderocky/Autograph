@@ -1,5 +1,6 @@
 package org.valross.autograph.parser.command;
 
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.document.TextNode;
 import org.valross.autograph.parser.CommandParser;
@@ -15,7 +16,7 @@ public class SimpleCommandParser extends CommandParser<Node> {
     private final Command function;
 
     public SimpleCommandParser(Command function, Source reader) {
-        super(reader);
+        super(reader, CommandSet.of());
         this.function = function;
     }
 

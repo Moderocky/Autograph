@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class CodeBlockCommand extends BalancedBracketParser {
 
-    public CodeBlockCommand(Source source, CommandDefinition... commands) {
+    public CodeBlockCommand(Source source, CommandSet commands) {
         super(source, commands);
     }
 

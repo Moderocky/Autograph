@@ -1,6 +1,6 @@
 package org.valross.autograph.parser.command;
 
-import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.Body;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.parser.Source;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class ContentParser extends ArgumentParser<Node> {
 
-    public ContentParser(Source source, CommandDefinition... commands) {
+    public ContentParser(Source source, CommandSet commands) {
         super(source, commands);
     }
 

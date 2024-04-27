@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class CommentCommand extends CommandParser<EmptyNode> {
 
-    public CommentCommand(Source source, CommandDefinition... commands) {
+    public CommentCommand(Source source, CommandSet commands) {
         super(source, commands);
     }
 

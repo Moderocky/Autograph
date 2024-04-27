@@ -1,6 +1,7 @@
 package org.valross.autograph.parser;
 
 import org.junit.Test;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.CommandNode;
 import org.valross.autograph.document.Document;
 import org.valross.autograph.document.TextNode;
@@ -14,13 +15,15 @@ public class CommandParserTest extends ParserTest {
 
     @Override
     protected Parser<?> makeParser(String text) {
-        return new TestCommandParser(new ReaderSource(new BufferedReader(new StringReader(text))));
+        return new TestCommandParser(new ReaderSource(new BufferedReader(new StringReader(text))), CommandSet.of());
     }
 
     @Test
     public void simpleCommand() throws IOException {
         final Document document;
-        try (AutographParser parser = new AutographParser(new StringReader("&test(foo)"), TestCommandParser.TEST)) {
+        try (
+            AutographParser parser = new AutographParser(new StringReader("&test(foo)"),
+                                                         CommandSet.of(TestCommandParser.TEST))) {
             document = parser.parse();
         }
         assert document != null;
@@ -34,7 +37,9 @@ public class CommandParserTest extends ParserTest {
     @Test
     public void textAndCommand() throws IOException {
         final Document document;
-        try (AutographParser parser = new AutographParser(new StringReader("foo&test(foo)"), TestCommandParser.TEST)) {
+        try (
+            AutographParser parser = new AutographParser(new StringReader("foo&test(foo)"),
+                                                         CommandSet.of(TestCommandParser.TEST))) {
             document = parser.parse();
         }
         assert document != null;
@@ -52,7 +57,9 @@ public class CommandParserTest extends ParserTest {
     @Test
     public void commandAndText() throws IOException {
         final Document document;
-        try (AutographParser parser = new AutographParser(new StringReader("&test(foo)bar"), TestCommandParser.TEST)) {
+        try (
+            AutographParser parser = new AutographParser(new StringReader("&test(foo)bar"),
+                                                         CommandSet.of(TestCommandParser.TEST))) {
             document = parser.parse();
         }
         assert document != null;
@@ -72,7 +79,7 @@ public class CommandParserTest extends ParserTest {
         final Document document;
         try (
             AutographParser parser = new AutographParser(new StringReader("foo&test(foo)bar"),
-                                                         TestCommandParser.TEST)) {
+                                                         CommandSet.of(TestCommandParser.TEST))) {
             document = parser.parse();
         }
         assert document != null;

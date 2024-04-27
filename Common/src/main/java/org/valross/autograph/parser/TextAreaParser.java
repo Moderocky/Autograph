@@ -1,6 +1,6 @@
 package org.valross.autograph.parser;
 
-import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.CommandNode;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.document.TextNode;
@@ -13,11 +13,11 @@ import java.util.List;
 
 public class TextAreaParser extends ElementParser<Node> implements MultiNodeParser {
 
-    private final CommandDefinition[] commands;
+    private final CommandSet commands;
     private final List<Node> nodes;
 
-    public TextAreaParser(Source source, CommandDefinition... commands) {
-        super(source);
+    public TextAreaParser(Source source, CommandSet commands) {
+        super(source, commands);
         this.commands = commands;
         this.nodes = new ArrayList<>();
     }
@@ -71,13 +71,13 @@ public class TextAreaParser extends ElementParser<Node> implements MultiNodePars
         return new ParagraphNode(nodes).simplify();
     }
 
-    public CommandDefinition[] commands() {
+    public CommandSet commands() {
         return commands;
     }
 
     public static class LocalCommandParser extends CommandHeaderParser {
 
-        public LocalCommandParser(Source source, CommandDefinition... commands) {
+        public LocalCommandParser(Source source, CommandSet commands) {
             super(source, commands);
         }
 

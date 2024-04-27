@@ -1,6 +1,6 @@
 package org.valross.autograph.parser;
 
-import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.Document;
 import org.valross.autograph.document.Node;
 
@@ -11,17 +11,17 @@ import java.util.List;
 public non-sealed class AutographParser extends Parser<Document> implements MultiNodeParser {
 
     private final List<Node> nodes;
-    private final CommandDefinition[] commands;
+    private final CommandSet commands;
 
-    public AutographParser(String source, CommandDefinition... commands) {
+    public AutographParser(String source, CommandSet commands) {
         this(new StringReader(source), commands);
     }
 
-    public AutographParser(InputStream stream, CommandDefinition... commands) {
+    public AutographParser(InputStream stream, CommandSet commands) {
         this(new BufferedReader(new InputStreamReader(stream)), commands);
     }
 
-    public AutographParser(Reader reader, CommandDefinition... commands) {
+    public AutographParser(Reader reader, CommandSet commands) {
         super(reader);
         this.nodes = new ArrayList<>();
         this.commands = commands;
@@ -36,7 +36,7 @@ public non-sealed class AutographParser extends Parser<Document> implements Mult
     }
 
     @Override
-    public CommandDefinition[] commands() {
+    public CommandSet commands() {
         return commands;
     }
 

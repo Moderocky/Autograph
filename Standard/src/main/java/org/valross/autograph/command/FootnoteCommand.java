@@ -15,7 +15,7 @@ public class FootnoteCommand extends HTMCommandParser {
 
     protected final ArticleCommand article;
 
-    public FootnoteCommand(Source source, CommandDefinition... commands) {
+    public FootnoteCommand(Source source, CommandSet commands) {
         super(source, commands);
         this.article = this.findOuter(ArticleCommand.class);
         if (this.article == null) throw new CommandException("Footnotes cannot be used outside an '&article()'", this);

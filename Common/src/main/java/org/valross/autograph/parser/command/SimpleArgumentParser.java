@@ -1,12 +1,12 @@
 package org.valross.autograph.parser.command;
 
-import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.TextNode;
 import org.valross.autograph.parser.Source;
 
 public class SimpleArgumentParser extends ArgumentParser<TextNode> {
 
-    public SimpleArgumentParser(Source source, CommandDefinition... commands) {
+    public SimpleArgumentParser(Source source, CommandSet commands) {
         super(source, commands);
     }
 

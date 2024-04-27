@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class RubyCommand extends HTMCommandParser {
 
-    public RubyCommand(Source source, CommandDefinition... commands) {
+    public RubyCommand(Source source, CommandSet commands) {
         super(source, commands);
     }
 

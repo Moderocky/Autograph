@@ -2,18 +2,15 @@ package org.valross.autograph.command;
 
 import mx.kenzie.hypertext.element.HREFElement;
 import mx.kenzie.hypertext.element.StandardElements;
-import org.valross.autograph.document.Node;
 import org.valross.autograph.document.TextNode;
 import org.valross.autograph.document.model.HTMNode;
 import org.valross.autograph.parser.Source;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LinkCommand extends HTMCommandParser {
 
-    public LinkCommand(Source source, CommandDefinition... commands) {
+    public LinkCommand(Source source, CommandSet commands) {
         super(source, commands);
     }
 

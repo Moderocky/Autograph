@@ -1,6 +1,6 @@
 package org.valross.autograph.parser.command;
 
-import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.parser.CommandParser;
 import org.valross.autograph.parser.MultiNodeParser;
@@ -13,7 +13,7 @@ public abstract class ArgumentParser<Result extends Node> extends CommandParser<
 
     private final List<Node> nodes;
 
-    public ArgumentParser(Source source, CommandDefinition... commands) {
+    public ArgumentParser(Source source, CommandSet commands) {
         super(source, commands);
         this.nodes = new ArrayList<>();
     }

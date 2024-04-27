@@ -44,8 +44,8 @@ final class CheckedSource extends Source {
     }
 
     @Override
-    public void reset() throws IOException {
-        this.parser.reset();
+    public int read(char[] chars, int offset, int length) throws IOException {
+        return parser.read(chars, offset, length);
     }
 
     @Override
@@ -54,13 +54,13 @@ final class CheckedSource extends Source {
     }
 
     @Override
-    public int caret() {
-        return parser.caret();
+    public void reset() throws IOException {
+        this.parser.reset();
     }
 
     @Override
-    public int read(char[] chars, int offset, int length) throws IOException {
-        return parser.read(chars, offset, length);
+    public int caret() {
+        return parser.caret();
     }
 
     @Override
@@ -97,10 +97,15 @@ final class ReaderSource extends Source {
     }
 
     @Override
-    public void reset() throws IOException {
-        this.reader.reset();
-        this.caret = mark;
-        this.mark = limit = 0;
+    public int read(char[] chars, int offset, int length) throws IOException {
+        try {
+            return reader.read(chars, offset, length);
+        } finally {
+            this.caret += length;
+            if (caret > (mark + limit)) {
+                this.mark = limit = 0;
+            }
+        }
     }
 
     @Override
@@ -111,20 +116,15 @@ final class ReaderSource extends Source {
     }
 
     @Override
-    public int caret() {
-        return caret;
+    public void reset() throws IOException {
+        this.reader.reset();
+        this.caret = mark;
+        this.mark = limit = 0;
     }
 
     @Override
-    public int read(char[] chars, int offset, int length) throws IOException {
-        try {
-            return reader.read(chars, offset, length);
-        } finally {
-            this.caret += length;
-            if (caret > (mark + limit)) {
-                this.mark = limit = 0;
-            }
-        }
+    public int caret() {
+        return caret;
     }
 
     @Override

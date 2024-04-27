@@ -9,11 +9,6 @@ import java.nio.charset.Charset;
 public record CommandNode(String command, Node node) implements Node, RecordConstant {
 
     @Override
-    public String toString() {
-        return '&' + command + '(' + node.toString() + ')';
-    }
-
-    @Override
     public void write(OutputStream stream, Charset charset) throws IOException {
         this.node.write(stream, charset);
     }
@@ -21,6 +16,11 @@ public record CommandNode(String command, Node node) implements Node, RecordCons
     @Override
     public int hashCode() {
         return node.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return '&' + command + '(' + node.toString() + ')';
     }
 
 }

@@ -1,22 +1,17 @@
 package org.valross.autograph.parser;
 
-import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.Node;
 
 import java.io.IOException;
 
 public abstract non-sealed class ElementParser<Result extends Node> extends Parser<Result> {
 
-    protected final CommandDefinition[] commands;
+    protected final CommandSet commands;
 
-    public ElementParser(Source source, CommandDefinition... commands) {
+    public ElementParser(Source source, CommandSet commands) {
         super(source);
         this.commands = commands;
-    }
-
-    @Override
-    public void close() {
-        this.closed = true;
     }
 
     public String readLine() {
@@ -26,18 +21,23 @@ public abstract non-sealed class ElementParser<Result extends Node> extends Pars
     }
 
     @Override
-    public CommandDefinition[] commands() {
+    public CommandSet commands() {
         return commands;
     }
 
+    @Override
+    public void close() {
+        this.closed = true;
+    }
+
     protected void consumeWhitespace() throws IOException {
-        while (Character.isWhitespace(this.next()));
+        while (Character.isWhitespace(this.next())) ;
         this.stowChar();
     }
 
     protected class InnerTextParser extends TextAreaParser {
 
-        public InnerTextParser(Source source, CommandDefinition... commands) {
+        public InnerTextParser(Source source, CommandSet commands) {
             super(source, commands);
         }
 

@@ -14,7 +14,7 @@ public abstract class HTMCommandParser extends CommandParser<HTMNode> implements
 
     private final List<Node> nodes;
 
-    public HTMCommandParser(Source source, CommandDefinition... commands) {
+    public HTMCommandParser(Source source, CommandSet commands) {
         super(source, commands);
         this.nodes = new ArrayList<>();
     }

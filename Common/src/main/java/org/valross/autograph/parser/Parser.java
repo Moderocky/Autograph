@@ -1,6 +1,6 @@
 package org.valross.autograph.parser;
 
-import org.valross.autograph.command.CommandDefinition;
+import org.valross.autograph.command.CommandSet;
 import org.valross.autograph.document.Node;
 
 import java.io.*;
@@ -40,7 +40,7 @@ public abstract sealed class Parser<Result extends Node> extends Source
 
     public abstract Result parse() throws IOException;
 
-    public abstract CommandDefinition[] commands();
+    public abstract CommandSet commands();
 
     private void readChar() throws IOException {
         //<editor-fold desc="Store the next (unescaped) character" defaultstate="collapsed">
@@ -93,8 +93,13 @@ public abstract sealed class Parser<Result extends Node> extends Source
     }
 
     public <Type extends ElementParser<? extends Node>>
-    Type delegate(BiFunction<Source, CommandDefinition[], Type> supplier) {
+    Type delegate(BiFunction<Source, CommandSet, Type> supplier) {
         return supplier.apply(this, this.commands());
+    }
+
+    public <Type extends ElementParser<? extends Node>>
+    Type delegate(CommandSet commands, BiFunction<Source, CommandSet, Type> supplier) {
+        return supplier.apply(this, commands);
     }
 
     @Override

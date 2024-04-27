@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class HTMLCommand extends HTMCommandParser {
 
-    public HTMLCommand(Source source, CommandDefinition... commands) {
+    public HTMLCommand(Source source, CommandSet commands) {
         super(source, commands);
     }
 

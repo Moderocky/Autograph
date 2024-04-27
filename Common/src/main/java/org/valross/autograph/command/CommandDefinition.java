@@ -22,8 +22,16 @@ public record CommandDefinition(String command, ParserSupplier parser) {
         return of(command, (SimpleCommandParser.SimpleCommand) function);
     }
 
-    @FunctionalInterface
-    public interface ParserSupplier extends BiFunction<Source, CommandDefinition[], ElementParser<? extends Node>> {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CommandDefinition that)) return false;
+        return Objects.equals(command, that.command);
+    }
+
+    @Override
+    public int hashCode() {
+        return command.hashCode();
     }
 
     @Override
@@ -31,16 +39,8 @@ public record CommandDefinition(String command, ParserSupplier parser) {
         return "&" + command;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CommandDefinition that)) return false;
-        return Objects.equals(command, that.command) ;
-    }
-
-    @Override
-    public int hashCode() {
-        return command.hashCode();
+    @FunctionalInterface
+    public interface ParserSupplier extends BiFunction<Source, CommandSet, ElementParser<? extends Node>> {
     }
 
 }

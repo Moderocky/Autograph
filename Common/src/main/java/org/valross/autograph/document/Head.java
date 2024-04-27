@@ -10,11 +10,6 @@ import java.util.Arrays;
 public record Head(Node... nodes) implements RecordConstant, MultiNode {
 
     @Override
-    public String toString() {
-        return "Head[" + String.join(", ", nodes) + ']';
-    }
-
-    @Override
     public void write(OutputStream stream, Charset charset) throws IOException {
         for (Node node : nodes) node.write(stream, charset);
     }
@@ -22,6 +17,11 @@ public record Head(Node... nodes) implements RecordConstant, MultiNode {
     @Override
     public int hashCode() {
         return Arrays.hashCode(nodes);
+    }
+
+    @Override
+    public String toString() {
+        return "Head[" + String.join(", ", nodes) + ']';
     }
 
 }
