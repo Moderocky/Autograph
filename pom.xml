@@ -11,6 +11,7 @@
     <modules>
         <module>Common</module>
         <module>Standard</module>
+        <module>Stylesheet</module>
     </modules>
 
     <properties>

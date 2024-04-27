@@ -1,0 +1,141 @@
+@property --fade-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: unset;
+}
+
+@property --link-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: unset;
+}
+
+.autograph {
+    p {
+        margin: 0.7em 0 0.7em 0;
+    }
+}
+
+.ag-article {
+    .ag-reference > a {
+        color: var(--link-color);
+        font-style: normal;
+        text-decoration: none;
+    }
+
+    .ag-figure {
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+
+        .ag-caption {
+            font-style: italic;
+
+            span {
+                color: var(--fade-color);
+                font-weight: bold;
+                font-style: normal;
+
+                &:after {
+                    content: ': ';
+                }
+            }
+        }
+    }
+
+    .ag-figure-reference {
+        color: var(--fade-color);
+        font-style: italic;
+        text-decoration-line: underline;
+        text-decoration-style: dotted;
+        text-decoration-color: var(--fade-color);
+    }
+
+    .ag-footer {
+        margin-top: 2em;
+
+        dl.ag-footnote {
+            display: flex;
+            justify-content: flex-start;
+            margin: 0.5em 0 0.5em 0;
+
+            dt {
+                width: auto;
+                height: auto;
+                float: left;
+                display: inline-block;
+                vertical-align: top;
+
+                &:after {
+                    content: '.';
+                }
+            }
+
+            dd {
+                margin-left: 0.5em;
+                text-indent: -1em;
+                padding-left: 1em;
+                display: inline-block;
+                vertical-align: top;
+                float: none;
+                overflow: hidden;
+
+                p {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+}
+
+q.ag-citation {
+    /*&cite inline mode*/
+    color: var(--fade-color);
+    font-style: italic;
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: var(--fade-color);
+
+    &:before, &:after {
+        content: '';
+    }
+}
+
+q.ag-citation + .ag-source {
+    /*&cite inline mode source*/
+    display: inline;
+    margin-left: 0.4em;
+    font-size: small;
+
+    &:before {
+        content: '(Source: ';
+    }
+
+    &:after {
+        content: ')';
+    }
+}
+
+blockquote.ag-citation {
+    /*&cite block mode*/
+    border-left: 4px solid #a5a5a5;
+    margin: 0.5em 0 0.5em 0;
+    padding: 0.5em 0 0.5em 1em;
+
+    p {
+        margin-top: 0;
+    }
+
+    .ag-source {
+        /*&cite block mode source*/
+        margin-left: 0.5em;
+        display: block;
+        content: 'End of Latin';
+        text-align: right;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+}
+
+.invisible {
+    visibility: hidden;
+}

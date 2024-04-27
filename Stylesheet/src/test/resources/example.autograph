@@ -1,0 +1,44 @@
+
+This is root text.
+More root text.
+
+A new paragraph.
+
+&article(
+    &header(Header!)
+
+    This is an article.&footnote(
+        Really really really really really really really really really really really really really really really
+        really really really really really really really really really really really really really really really
+        really long footnote.
+
+        Another paragraph.
+     )
+
+    See &fig(First) for more info.
+
+    &figure(First,
+        My cool figure.
+        More text.
+
+        &caption(Something something good.)
+    )
+
+    I think &fig(First) was pretty good, personally.&footnote(Me, 2024.)
+
+    Coconuts grow on &cite(#test, trees)
+
+    Coconuts grow on &cite(&footnote(foo)&footnote(bar), trees)
+
+    &quote(block quote)
+
+    &q(inline quote)
+
+    &cite(foobar fake source,
+        Coconuts grow on bushes!!
+
+        All that "tree" nonsense is a lie.
+    )
+
+    &footer(References:)
+)
