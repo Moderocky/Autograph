@@ -1,6 +1,8 @@
-package org.valross.autograph.command;
+package org.valross.autograph.command.article;
 
 import mx.kenzie.hypertext.element.StandardElements;
+import org.valross.autograph.command.CommandSet;
+import org.valross.autograph.command.HTMCommandParser;
 import org.valross.autograph.document.model.HTMNode;
 import org.valross.autograph.parser.Source;
 

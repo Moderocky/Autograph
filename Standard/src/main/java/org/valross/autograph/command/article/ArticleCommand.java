@@ -1,20 +1,28 @@
-package org.valross.autograph.command;
+package org.valross.autograph.command.article;
 
 import mx.kenzie.hypertext.element.StandardElements;
+import org.valross.autograph.command.CommandSet;
+import org.valross.autograph.command.Commands;
+import org.valross.autograph.command.HTMCommandParser;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.document.model.HTMNode;
 import org.valross.autograph.error.CommandException;
 import org.valross.autograph.parser.Source;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class ArticleCommand extends HTMCommandParser {
 
-    final LinkedList<HTMNode> footnotes = new LinkedList<>();
+    final List<HTMNode> footnotes;
+    final List<FigureCommand.FigureStub> figures;
 
     public ArticleCommand(Source source, CommandSet commands) {
         super(source, commands);
+        this.footnotes = new LinkedList<>();
+        this.figures = new ArrayList<>();
     }
 
     @Override
@@ -24,7 +32,7 @@ public class ArticleCommand extends HTMCommandParser {
 
     @Override
     protected Node[] consume() throws IOException {
-        final CommandSet commands = this.commands().with(Commands.FOOTNOTE);
+        final CommandSet commands = this.commands().with(Commands.FOOTNOTE, Commands.FIGURE, Commands.FIGURE_REFERENCE);
         this.consumeWhitespace();
         do try (final InnerTextParser text = this.delegate(commands, InnerTextParser::new)) {
             this.addNode(text.parse());

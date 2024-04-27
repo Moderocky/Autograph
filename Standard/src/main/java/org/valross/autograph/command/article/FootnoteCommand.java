@@ -1,10 +1,11 @@
-package org.valross.autograph.command;
+package org.valross.autograph.command.article;
 
 import mx.kenzie.hypertext.element.HTMElement;
 import mx.kenzie.hypertext.element.StandardElements;
+import org.valross.autograph.command.CommandSet;
+import org.valross.autograph.command.HTMCommandParser;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.document.model.HTMNode;
-import org.valross.autograph.error.CommandException;
 import org.valross.autograph.parser.Source;
 
 import java.io.IOException;
@@ -18,7 +19,6 @@ public class FootnoteCommand extends HTMCommandParser {
     public FootnoteCommand(Source source, CommandSet commands) {
         super(source, commands);
         this.article = this.findOuter(ArticleCommand.class);
-        if (this.article == null) throw new CommandException("Footnotes cannot be used outside an '&article()'", this);
     }
 
     @Override

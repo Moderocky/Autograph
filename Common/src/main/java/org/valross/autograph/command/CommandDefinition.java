@@ -8,18 +8,26 @@ import org.valross.autograph.parser.command.SimpleCommandParser;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-public record CommandDefinition(String command, ParserSupplier parser) {
+public record CommandDefinition(CommandDefinition parent, String command, ParserSupplier parser) {
 
     public static CommandDefinition ofArguments(String command, SimpleCommandParser.ArgumentCommand function) {
-        return new CommandDefinition(command, (source, _) -> new SimpleCommandParser(function, source));
+        return of(command, (source, _) -> new SimpleCommandParser(function, source));
     }
 
     public static CommandDefinition of(String command, SimpleCommandParser.SimpleCommand function) {
-        return new CommandDefinition(command, (source, _) -> new SimpleCommandParser(function, source));
+        return of(command, (source, _) -> new SimpleCommandParser(function, source));
     }
 
     public static CommandDefinition of(String command, SimpleCommandParser.HeadlessCommand function) {
         return of(command, (SimpleCommandParser.SimpleCommand) function);
+    }
+
+    public static CommandDefinition of(String command, ParserSupplier parser) {
+        return new CommandDefinition(null, command, parser);
+    }
+
+    public CommandDefinition subcommand(String command, ParserSupplier parser) {
+        return new CommandDefinition(this, command, parser);
     }
 
     @Override

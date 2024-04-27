@@ -37,6 +37,7 @@ public class CommandListTest extends DOMTest {
             final boolean removed = commands.remove(value);
             assert removed;
         }
+        commands.removeIf(command -> command.parent() != null);
         assert commands.isEmpty() : "Missing " + commands;
     }
 

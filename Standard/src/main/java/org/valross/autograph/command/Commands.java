@@ -2,6 +2,7 @@ package org.valross.autograph.command;
 
 import mx.kenzie.hypertext.element.HTMElement;
 import mx.kenzie.hypertext.element.StandardElements;
+import org.valross.autograph.command.article.*;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.document.model.HTMNode;
 import org.valross.autograph.document.model.ParagraphNode;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 public class Commands {
 
-    public static final CommandDefinition COMMENT = new CommandDefinition("comment", CommentCommand::new);
+    public static final CommandDefinition COMMENT = CommandDefinition.of("comment", CommentCommand::new);
     public static final CommandDefinition ASIDE = blockCommand(StandardElements.ASIDE);
     public static final CommandDefinition BOLD = inlineCommand(StandardElements.B),
         ITALIC = inlineCommand(StandardElements.I),
@@ -31,17 +32,20 @@ public class Commands {
     public static final CommandDefinition DETAILS = blockCommand(StandardElements.DETAILS),
         SUMMARY = blockCommand(StandardElements.SUMMARY);
     public static final CommandDefinition BLOCK_QUOTE = blockCommand("quote", StandardElements.BLOCKQUOTE);
-    public static final CommandDefinition LINK = new CommandDefinition("link", LinkCommand::new);
-    public static final CommandDefinition HTML = new CommandDefinition("html", HTMLCommand::new);
-    public static final CommandDefinition SOFT_TABLE = new CommandDefinition("softTable", SoftTableCommand::new);
-    public static final CommandDefinition CODE = new CommandDefinition("code", CodeCommand::new);
-    public static final CommandDefinition CODE_BLOCK = new CommandDefinition("codeBlock", CodeBlockCommand::new);
-    public static final CommandDefinition RUBY = new CommandDefinition("ruby", RubyCommand::new);
-    public static final CommandDefinition ARTICLE = new CommandDefinition("article", ArticleCommand::new),
+    public static final CommandDefinition LINK = CommandDefinition.of("link", LinkCommand::new);
+    public static final CommandDefinition HTML = CommandDefinition.of("html", HTMLCommand::new);
+    public static final CommandDefinition SOFT_TABLE = CommandDefinition.of("softTable", SoftTableCommand::new);
+    public static final CommandDefinition CODE = CommandDefinition.of("code", CodeCommand::new);
+    public static final CommandDefinition CODE_BLOCK = CommandDefinition.of("codeBlock", CodeBlockCommand::new);
+    public static final CommandDefinition RUBY = CommandDefinition.of("ruby", RubyCommand::new);
+    public static final CommandDefinition ARTICLE = CommandDefinition.of("article", ArticleCommand::new),
         HEADER = blockCommand(StandardElements.HEADER),
-        FOOTER = new CommandDefinition("footer", FooterCommand::new),
-        CITE = new CommandDefinition("cite", CiteCommand::new);
-    protected static final CommandDefinition FOOTNOTE = new CommandDefinition("footnote", FootnoteCommand::new);
+        FOOTER = CommandDefinition.of("footer", FooterCommand::new),
+        CITE = CommandDefinition.of("cite", CiteCommand::new),
+        FOOTNOTE = ARTICLE.subcommand("footnote", FootnoteCommand::new),
+        FIGURE = ARTICLE.subcommand("figure", FigureCommand::new),
+        FIGURE_CAPTION = FIGURE.subcommand("caption", CaptionCommand::new),
+        FIGURE_REFERENCE = ARTICLE.subcommand("fig", FigureReferenceCommand::new);
 
     private static final CommandDefinition[] commands = new CommandDefinition[] {
         COMMENT,
@@ -134,7 +138,7 @@ public class Commands {
 
         }
         //</editor-fold>
-        return new CommandDefinition(name, StaticCommandParser::new);
+        return CommandDefinition.of(name, StaticCommandParser::new);
     }
 
     private static CommandDefinition blockCommand(HTMElement tag) {
@@ -156,7 +160,7 @@ public class Commands {
 
         }
         //</editor-fold>
-        return new CommandDefinition(name, StaticCommandParser::new);
+        return CommandDefinition.of(name, StaticCommandParser::new);
     }
 
     private static CommandDefinition singleCommand(String name, HTMElement tag) {
@@ -176,7 +180,7 @@ public class Commands {
 
         }
         //</editor-fold>
-        return new CommandDefinition(name, StaticCommandParser::new);
+        return CommandDefinition.of(name, StaticCommandParser::new);
     }
 
     private Commands() {

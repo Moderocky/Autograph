@@ -3,9 +3,68 @@ Autograph
 
 An extensible markup language with a simple design.
 
-# Common Design
+# Introduction
+
+## Motivation
+
+LaTeX has been around since the 1980s: it is powerful, extensible, and has a package for every situation. \
+It is a nightmare that requires special training to use properly.
+
+HTML arrived in 1993: it is completely standardised, supported, and extensible. \
+It is also cumbersome, verbose, rigid, and inflexible.
+
+BBCode arrived in 1998: it is clear, commonplace and straightforward. \
+It is also clunky, limited and cheap.
+
+'Markdown' made its debut in 2004: it is fast, simple and easy to remember. \
+Unfortunately, it lacks any standardisation, is filled with different parsing and rendering ambiguities from 
+website to website (Are underlines supported? Can you escape characters in code blocks? Is pure HTML allowed?)
+and although it professes to be extensible, this is in name only.
+
+More to the point, none of these provide a universally-deployable system. XML does not make for a readable document,
+BBCode is too cumbersome to write and no longer seen outside old internet forums, and markdown does not offer
+the kind of typesetting needed for anything above `README.md`s and blog posts.
+TeX and LaTeX are easily the most powerful, going into proper typesetting that only styled HTML can compete with.
+The issue is, LaTeX is far too complex and advanced to set up and write anything time-sensitive with.
+
+Markdown is not sufficient for articles or publication: it simply can't compare with the typesetting tools provided
+by other scripts. BBCode introduces more image tools, font colours, collapsible sections, but at the cost of being
+tricky and slow to write. LaTeX is big: big enough for publishing proofs, but far too big for anything less than that.
+There is a reason universities have to run undergraduate workshops for learning to use LaTeX properly.
+
+### What does the perfect markup language look like?
+
+This is a difficult question to answer: it must absorb all the benefits and advantages of existing markup languages
+while avoiding picking up any of their pitfalls and drawbacks.
+
+## Goals
+
+- Simple: easy to remember and to use, without interrupting the flow of the text while reading.
+- Flexible: extends to meet large, complex typesetting projects, squashes down to provide barebones comment styling.
+- Reliable: the same input must guarantee the same output.
+- Standardised: there must be some concept of inviolable rules, which all implementations must follow.
+
+# Design
 
 ## Elements
+
+Autograph has two kinds of thing: text and commands.
+
+Text is raw, written content, stored and displayed as-is (with the proper sanitation for its format).
+
+Commands are special instructions to the parser to format the inner content differently, or to insert some element.
+
+Text and commands can (almost) always be mixed together, with the exception of special 'text-only' areas
+where special characters and formatting are not allowed (e.g. document window title & description).
+
+### Escape Character
+
+The escape character is **backslash** ` \ `. Placing a backslash before any character (e.g. `&()\`) 
+will prevent it from having a control effect.
+In other words, if that character was supposed to do something special, it won't.
+The backslash itself will not render.
+
+To render a backslash, escape it with a second backslash: ` \\ `.
 
 ### Text
 
@@ -33,11 +92,13 @@ The command name is followed by the command header: opened by `(` and closed by 
 
 All commands need a header, even if they take no input.
 
+`&emptyCommand()`
+
 The processing of the command's header depends on the command used.
 Some commands may take one or more arguments, separated by a comma `,`.
 
 ```
-&my cool command(an argument, another argument)
+&my command(an argument, another argument)
 ```
 
 Commands have complete authority over how to parse anything inside their `()` header.
@@ -290,3 +351,70 @@ Multiple footnotes may be used in a citation. This will add multiple anchors aft
 
 **Note**: if something _other than_ a footnote is used in a footnote citation, this will inject an in-text citation as
 well.
+
+### `&figure`
+
+The `&figure(ID, content)` command inserts a referencable figure block into the document.
+This can contain images, tables, etc. and will be separated from the rest of the content.
+
+Figures can be referenced by their ID, so it is important that every figure is given a unique ID.
+This ID is used to substitute the numeric index of the figure when the document is assembled,
+to create standard references (e.g. Figure 1, Fig. 1).
+
+```
+&article(
+    &figure(My fantastic poem,
+        Did you want to try
+        Escaping a bracket here
+        To make a nice face? :\)
+    ) 
+)
+```
+
+The figure ID will not be visible anywhere in the rendered document, so it can be anything convenient.
+
+```
+&figure(SomeTableOfData, ...) 
+```
+
+### `&caption`
+
+The `&caption(text)` command can be used within figures to add a named caption.
+This will contain an automatic reference to the figure's index in the article (e.g. Figure 1).
+
+```
+&article(
+    &figure(SurveyDataByAge,
+        Content goes here...
+        
+        &caption(The survey results arranged by age group.)
+    ) 
+)
+```
+
+### `&fig`
+
+The figure reference `&fig(ID)` command is used to insert an indexed reference to a figure in the same article.
+
+Its only parameter is the ID used in the `&figure(ID, ...)` command.
+
+```
+&article(
+    &figure(SurveyDataByAge, blah blah)
+    
+    As seen in &fig(SurveyDataByAge), ...
+)
+```
+
+Forward and backward references are both permitted.
+
+```
+&article(
+    If you refer to &fig(SurveyDataByAge), you will see that...
+
+    &figure(SurveyDataByAge, blah blah)
+)
+```
+
+**Note**: if a figure reference is made to a figure that is _never_ written, it will take up an index at the
+end of the figure set.

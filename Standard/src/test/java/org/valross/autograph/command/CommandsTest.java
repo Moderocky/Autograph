@@ -2,6 +2,7 @@ package org.valross.autograph.command;
 
 import org.junit.Test;
 import org.valross.autograph.document.Document;
+import org.valross.autograph.error.CommandException;
 import org.valross.autograph.parser.AutographParser;
 
 import java.io.IOException;
@@ -209,12 +210,14 @@ public class CommandsTest extends DOMTest {
     @Test
     public void details() throws IOException {
         this.test("&details(test)", "<body><details><p>test</p></details></body>");
-        this.test("&details(&summary(foo)\n\nsomething else)", "<body><details><summary><p>foo</p></summary><p>something else</p></details></body>");
+        this.test("&details(&summary(foo)\n\nsomething else)", "<body><details><summary><p>foo</p></summary><p" +
+            ">something else</p></details></body>");
     }
 
     @Test
     public void summary() throws IOException {
-        this.test("&details(&summary(foo)\n\nsomething else)", "<body><details><summary><p>foo</p></summary><p>something else</p></details></body>");
+        this.test("&details(&summary(foo)\n\nsomething else)", "<body><details><summary><p>foo</p></summary><p" +
+            ">something else</p></details></body>");
     }
 
     @Test
@@ -222,6 +225,50 @@ public class CommandsTest extends DOMTest {
         this.test("&em(testing thing)", "<body><em>testing thing</em></body>");
         this.test("this is &em(very) good", "<body><p>this is <em>very</em> good</p></body>");
         this.test("&em(&i(testing) &b(thing))", "<body><em><i>testing</i> <b>thing</b></em></body>");
+    }
+
+    @Test
+    public void fig() throws IOException {
+        this.test("&article(See &fig(Foo)\n\n&figure(Foo, hello))", "<body><article class=\"ag-article\"><p>See <a " +
+            "alt=\"Figure 1\" class=\"ag-fig\" href=\"#figure-114a7\">Fig. 1</a></p><figure class=\"ag-figure\" " +
+            "id=\"figure-114a7\"><p>hello</p></figure></article></body>");
+    }
+
+    @Test(expected = CommandException.class)
+    public void figNoName() throws IOException {
+        this.test("&article(See &fig()\n\n&figure(Foo, hello))", "");
+    }
+
+    @Test
+    public void caption() throws IOException {
+        this.test("&article(See &fig(Foo)\n\n&figure(Foo, hello &caption(test)))", "<body><article " +
+            "class=\"ag-article\"><p>See <a alt=\"Figure 1\" class=\"ag-fig\" href=\"#figure-114a7\">Fig. " +
+            "1</a></p><figure class=\"ag-figure\" id=\"figure-114a7\"><p>hello <figcaption " +
+            "class=\"ag-caption\"><span>Figure 1</span>test</figcaption></p></figure></article></body>");
+    }
+
+    @Test
+    public void figure() throws IOException {
+        this.test("&article(See &fig(Foo)\n\n&figure(Foo, hello &caption(test)))", "<body><article " +
+            "class=\"ag-article\"><p>See <a alt=\"Figure 1\" class=\"ag-fig\" href=\"#figure-114a7\">Fig. " +
+            "1</a></p><figure class=\"ag-figure\" id=\"figure-114a7\"><p>hello <figcaption " +
+            "class=\"ag-caption\"><span>Figure 1</span>test</figcaption></p></figure></article></body>");
+    }
+
+    @Test(expected = CommandException.class)
+    public void figureNoName() throws IOException {
+        this.test("&article(See &fig(Foo)\n\n&figure(, hello &caption(test)))", "<body><article " +
+            "class=\"ag-article\"><p>See <a alt=\"Figure 1\" class=\"ag-fig\" href=\"#figure-114a7\">Fig. " +
+            "1</a></p><figure class=\"ag-figure\" id=\"figure-114a7\"><p>hello <figcaption " +
+            "class=\"ag-caption\"><span>Figure 1</span>test</figcaption></p></figure></article></body>");
+    }
+
+    @Test(expected = CommandException.class)
+    public void figureNoContent() throws IOException {
+        this.test("&article(See &fig(Foo)\n\n&figure(Foo))", "<body><article class=\"ag-article\"><p>See <a " +
+            "alt=\"Figure 1\" class=\"ag-fig\" href=\"#figure-114a7\">Fig. 1</a></p><figure class=\"ag-figure\" " +
+            "id=\"figure-114a7\"><p>hello <figcaption class=\"ag-caption\"><span>Figure " +
+            "1</span>test</figcaption></p></figure></article></body>");
     }
 
 }

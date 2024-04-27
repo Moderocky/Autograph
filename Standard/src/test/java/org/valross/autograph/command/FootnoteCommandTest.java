@@ -2,6 +2,7 @@ package org.valross.autograph.command;
 
 import mx.kenzie.hypertext.PageWriter;
 import org.junit.Test;
+import org.valross.autograph.command.article.FootnoteCommand;
 import org.valross.autograph.document.Document;
 import org.valross.autograph.parser.AutographParser;
 
