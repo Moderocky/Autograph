@@ -77,7 +77,7 @@ public class CommandListTest extends DOMTest {
             )
             """;
         final String expected = """
-            <body>
+            <main class="autograph">
             	<p>hello there! this is a <b>cool new document</b>.</p>
             	<p>
             		this is a new paragraph!
@@ -88,7 +88,7 @@ public class CommandListTest extends DOMTest {
             		<p>this command is on its own, so it gets its own box!</p>
             		<p>and it&apos;s in like a lil space idk</p>
             	</article>
-            </body>""";
+            </main>""";
         final Document document = this.parse(new AutographParser(content, Commands.standard()));
         this.test(expected, document, true);
     }

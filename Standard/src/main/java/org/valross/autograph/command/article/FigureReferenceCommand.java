@@ -32,7 +32,7 @@ public class FigureReferenceCommand extends CommandParser<Node> {
         final Supplier<HTMNode> supplier = () -> {
             final FigureCommand.FigureStub stub = FigureCommand.compileStub(article, name);
             final HTMElement link = StandardElements.A.href('#' + stub.id()).alt("Figure " + stub.index());
-            return new HTMNode(link.classes("ag-fig"), new TextNode("Fig. " + stub.index()));
+            return new HTMNode(link.classes("ag-figure-reference"), new TextNode("Fig. " + stub.index()));
         };
         return new LazyNode(supplier, name.hashCode());
     }

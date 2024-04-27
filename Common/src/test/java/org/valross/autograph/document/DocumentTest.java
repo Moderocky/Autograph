@@ -11,15 +11,15 @@ public class DocumentTest extends DOMTest {
 
     @Test
     public void simple() throws IOException {
-        final String content = "hello there", expected = "<body><p>hello there</p></body>";
+        final String content = "hello there", expected = "<main class=\"autograph\"><p>hello there</p></main>";
         final Document document = this.parse(new AutographParser(content, CommandSet.of()));
         this.test(expected, document);
     }
 
     @Test
     public void twoTextElements() throws IOException {
-        final String content = "hello there\n\ngeneral kenobi", expected = "<body><p>hello there</p><p>general " +
-            "kenobi</p></body>";
+        final String content = "hello there\n\ngeneral kenobi", expected = "<main class=\"autograph\"><p>hello there</p><p>general " +
+            "kenobi</p></main>";
         final Document document = this.parse(new AutographParser(content, CommandSet.of()));
         this.test(expected, document);
     }
@@ -27,7 +27,7 @@ public class DocumentTest extends DOMTest {
     @Test
     public void commandOnly() throws IOException {
         final CommandDefinition hello = CommandDefinition.of("hello", () -> new TextNode("hello"));
-        final String content = "&hello()", expected = "<body>hello</body>";
+        final String content = "&hello()", expected = "<main class=\"autograph\">hello</main>";
         final Document document = this.parse(new AutographParser(content, CommandSet.of(hello)));
         this.test(expected, document);
     }
@@ -35,7 +35,7 @@ public class DocumentTest extends DOMTest {
     @Test
     public void commandOnlyHead() throws IOException {
         final CommandDefinition hello = CommandDefinition.of("hello", (text) -> new TextNode("hello " + text));
-        final String content = "&hello(there)", expected = "<body>hello there</body>";
+        final String content = "&hello(there)", expected = "<main class=\"autograph\">hello there</main>";
         final Document document = this.parse(new AutographParser(content, CommandSet.of(hello)));
         this.test(expected, document);
     }
@@ -44,7 +44,7 @@ public class DocumentTest extends DOMTest {
     public void commandSimpleArguments() throws IOException {
         final CommandDefinition hello = CommandDefinition.ofArguments("hello", strings -> new TextNode(String.join(
             "+", strings)));
-        final String content = "&hello(there, world, foo)", expected = "<body>there+world+foo</body>";
+        final String content = "&hello(there, world, foo)", expected = "<main class=\"autograph\">there+world+foo</main>";
         final Document document = this.parse(new AutographParser(content, CommandSet.of(hello)));
         this.test(expected, document);
     }

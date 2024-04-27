@@ -10,7 +10,7 @@ public record Document(Node... nodes) implements MultiNode, Node, ModelNode, Rec
 
     @Override
     public HTMElement compile() {
-        return StandardElements.BODY.child(nodes);
+        return StandardElements.MAIN.classes("autograph").child(nodes);
     }
 
     @Override
