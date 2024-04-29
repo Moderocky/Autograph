@@ -40,5 +40,7 @@ A new paragraph.
         All that "tree" nonsense is a lie.
     )
 
+    &embed(500 by 200, table.html)
+
     &footer(References:)
 )
