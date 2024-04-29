@@ -40,6 +40,11 @@ A new paragraph.
         All that "tree" nonsense is a lie.
     )
 
+    This text is regular. This text is &color(#ff0000, red)!&break()
+    This text &mark(has some highlighting going on) for some reason.
+
+    &ruler()
+
     &embed(500 by 200, table.html)
 
     &footer(References:)

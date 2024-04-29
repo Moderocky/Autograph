@@ -1,24 +1,76 @@
-@property --fade-color {
+/* Colour of the main document background */
+@property --ag-main-background-color {
     syntax: "<color>";
     inherits: false;
     initial-value: unset;
 }
 
-@property --link-color {
+/* Colour of text in the document */
+@property --ag-text-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: unset;
+}
+
+/* Colour of some meta elements (reference notes, quotes, figures, etc.) */
+@property --ag-fade-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: unset;
+}
+
+/* Colour of hyperlinks, URLs, etc. */
+@property --ag-link-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: unset;
+}
+
+/* Colour of page 'lint' elements (lines, boxes, etc.) */
+@property --ag-lint-color {
     syntax: "<color>";
     inherits: false;
     initial-value: unset;
 }
 
 .autograph {
+    --ag-lint-color: #cdcdcd;
+    --ag-fade-color: rgba(0, 0, 0, 0.7);
+
+    @media (prefers-color-scheme: dark) {
+        --ag-lint-color: #515151;
+        --ag-main-background-color: #262627;
+        --ag-text-color: #ececec;
+        --ag-fade-color: rgba(255, 255, 255, 0.7);
+    }
+
+    background-color: var(--ag-main-background-color);
+    padding: 1em;
+
+    * {
+        color: var(--ag-text-color);
+    }
+
     p {
         margin: 0.7em 0 0.7em 0;
+    }
+
+    mark {
+        color: initial;
+    }
+
+    hr {
+        display: block;
+        margin: 1.4em 0.6em;
+        border-color: var(--ag-lint-color);
+        border-style: solid;
+        border-width: 0.08em;
     }
 }
 
 .ag-article {
     .ag-reference > a {
-        color: var(--link-color);
+        color: var(--ag-link-color);
         font-style: normal;
         text-decoration: none;
     }
@@ -31,7 +83,7 @@
             font-style: italic;
 
             span {
-                color: var(--fade-color);
+                color: var(--ag-fade-color);
                 font-weight: bold;
                 font-style: normal;
 
@@ -43,11 +95,11 @@
     }
 
     .ag-figure-reference {
-        color: var(--fade-color);
+        color: var(--ag-fade-color);
         font-style: italic;
         text-decoration-line: underline;
         text-decoration-style: dotted;
-        text-decoration-color: var(--fade-color);
+        text-decoration-color: var(--ag-fade-color);
     }
 
     .ag-footer {
@@ -89,11 +141,11 @@
 
 q.ag-citation {
     /*&cite inline mode*/
-    color: var(--fade-color);
+    color: var(--ag-fade-color);
     font-style: italic;
     text-decoration-line: underline;
     text-decoration-style: dotted;
-    text-decoration-color: var(--fade-color);
+    text-decoration-color: var(--ag-fade-color);
 
     &:before, &:after {
         content: '';
@@ -117,7 +169,7 @@ q.ag-citation + .ag-source {
 
 blockquote.ag-citation {
     /*&cite block mode*/
-    border-left: 4px solid #a5a5a5;
+    border-left: 0.16em solid var(--ag-lint-color);
     margin: 0.5em 0 0.5em 0;
     padding: 0.5em 0 0.5em 1em;
 
