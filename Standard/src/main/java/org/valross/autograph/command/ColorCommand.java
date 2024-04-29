@@ -2,6 +2,7 @@ package org.valross.autograph.command;
 
 import mx.kenzie.hypertext.css.Rule;
 import mx.kenzie.hypertext.element.StandardElements;
+import org.valross.autograph.document.Body;
 import org.valross.autograph.document.CommandNode;
 import org.valross.autograph.document.MultiNode;
 import org.valross.autograph.document.Node;
@@ -23,7 +24,7 @@ public class ColorCommand extends HTMCommandParser {
         if (this.next() != ',') throw new CommandException("&color hex argument should be followed by content", this);
         final Node[] nodes = this.consume();
         if (this.setInnerNode(color, nodes) instanceof HTMNode node) return node;
-        return new HTMNode(StandardElements.SPAN.style(Rule.style().rule("color", color)), nodes);
+        return new HTMNode(StandardElements.SPAN.style(Rule.style().rule("color", color)), new Body(nodes).stripParagraphs());
     }
 
     private Node setInnerNode(String color, Node... nodes) {
