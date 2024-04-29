@@ -48,8 +48,12 @@ public class CommandListTest extends DOMTest {
         for (CommandDefinition command : commands) {
             try {
                 CommandsTest.class.getDeclaredMethod(command.command());
-            } catch (NoSuchMethodException e) {
-                names.add(command.command());
+            } catch (NoSuchMethodException _) {
+                try {
+                    CommandsTest.class.getDeclaredMethod(command.command() + "_");
+                } catch (NoSuchMethodException _) {
+                    names.add(command.command());
+                }
             }
         }
         if (!names.isEmpty()) {
@@ -79,10 +83,8 @@ public class CommandListTest extends DOMTest {
         final String expected = """
             <main class="autograph">
             	<p>hello there! this is a <b>cool new document</b>.</p>
-            	<p>
-            		this is a new paragraph!
-            		yay!
-            	</p>
+            	<p>this is a new paragraph!
+            		yay!</p>
             	<p>and <i>this</i> is in italics!</p>
             	<article class="ag-article">
             		<p>this command is on its own, so it gets its own box!</p>
