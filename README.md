@@ -17,7 +17,7 @@ BBCode arrived in 1998: it is clear, commonplace and straightforward. \
 It is also clunky, limited and cheap.
 
 'Markdown' made its debut in 2004: it is fast, simple and easy to remember. \
-Unfortunately, it lacks any standardisation, is filled with different parsing and rendering ambiguities from 
+Unfortunately, it lacks any standardisation, is filled with different parsing and rendering ambiguities from
 website to website (Are underlines supported? Can you escape characters in code blocks? Is pure HTML allowed?)
 and although it professes to be extensible, this is in name only.
 
@@ -59,7 +59,7 @@ where special characters and formatting are not allowed (e.g. document window ti
 
 ### Escape Character
 
-The escape character is **backslash** ` \ `. Placing a backslash before any character (e.g. `&()\`) 
+The escape character is **backslash** ` \ `. Placing a backslash before any character (e.g. `&()\`)
 will prevent it from having a control effect.
 In other words, if that character was supposed to do something special, it won't.
 The backslash itself will not render.
@@ -111,15 +111,17 @@ The only rule is that they must terminate at a closing `)` bracket.
 
 These commands can contain text (and other commands).
 
-| Command   | Description                            | HTML Tag |
-|-----------|----------------------------------------|----------|
-| `&i()`    | Italic                                 | `<i>`    |
-| `&b()`    | Bold                                   | `<b>`    |
-| `&u()`    | Underline                              | `<u>`    |
-| `&s()`    | Strikethrough                          | `<s>`    |
-| `&q()`    | Quotation (inline)                     | `<q>`    |
-| `&em()`   | Emphasis (for screen reader)           | `<em>`   |
-| `&code()` | Code well: permits (balanced) brackets | `<code>` |
+| Command             | Description                            | HTML Tag |
+|---------------------|----------------------------------------|----------|
+| `&i(...)`           | Italic                                 | `<i>`    |
+| `&b(...)`           | Bold                                   | `<b>`    |
+| `&u(...)`           | Underline                              | `<u>`    |
+| `&s(...)`           | Strikethrough                          | `<s>`    |
+| `&q(...)`           | Quotation (inline)                     | `<q>`    |
+| `&em(...)`          | Emphasis (for screen reader)           | `<em>`   |
+| `&mark(...)`        | Highlight text                         | `<mark>` |
+| `&color(#HEX, ...)` | Text colour (hexadecimal colour code)  | `<span>` |
+| `&code(...)`        | Code well: permits (balanced) brackets | `<code>` |
 
 ## Block Elements
 
@@ -164,6 +166,21 @@ The text inside the tag is the link itself.
 If a second argument is provided, the `&link(https://url, content here)` command acts as an anchor `<a>`
 tag with an `href`.
 The content inside the tag is the second argument of the command.
+
+### `&embed`
+
+The `&embed(Width by Height, source URL)` command is used to embed remote content (e.g. an image) in the document.
+
+```
+&embed(500 by 450, https://my-website.com/my-image.png)
+```
+
+Its first argument is the embedded content size (in pixels), e.g. `600 by 300`.
+This defines how much space the content is allowed to take up in the document page.
+Some content types may be stretched (or squashed) to fit, others may be clipped.
+
+The second argument is a URL (link) to the content. The content type (e.g. image, text) will be inferred from
+this link's file extension (`...test.png` -> image, `...page.html` -> html).
 
 ### `&ruby`
 

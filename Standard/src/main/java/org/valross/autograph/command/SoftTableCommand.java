@@ -24,12 +24,11 @@ public class SoftTableCommand extends HTMCommandParser {
         final int columns, rows;
         try {
             final String[] split = definition.split("(x|by)");
-            if (split.length != 2) {}
-            assert split.length == 2;
+            if (split.length != 2) throw new IllegalArgumentException();
             columns = Integer.parseInt(split[0].trim());
             rows = Integer.parseInt(split[1].trim());
         } catch (Exception ex) {
-            throw new CommandException("Soft table must start with 'X by Y' definition:", this);
+            throw new CommandException("Soft table must start with 'X by Y' size definition:", this);
         }
         final LinkedList<Body> entries = new LinkedList<>();
         do {

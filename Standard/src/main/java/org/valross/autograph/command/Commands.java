@@ -25,7 +25,9 @@ public class Commands {
         UNDERLINE = inlineCommand(StandardElements.U),
         STRIKETHROUGH = inlineCommand(StandardElements.S),
         QUOTE = inlineCommand(StandardElements.Q),
-        EMPHASIS = inlineCommand(StandardElements.EM);
+        EMPHASIS = inlineCommand(StandardElements.EM),
+        MARK = inlineCommand(StandardElements.MARK),
+        COLOR = CommandDefinition.of("color", ColorCommand::new);
     public static final CommandDefinition TABLE = blockCommand(StandardElements.TABLE),
         ROW = inlineCommand("row", StandardElements.TR),
         CELL = inlineCommand("cell", StandardElements.TD);
@@ -33,6 +35,7 @@ public class Commands {
         SUMMARY = blockCommand(StandardElements.SUMMARY);
     public static final CommandDefinition BLOCK_QUOTE = blockCommand("quote", StandardElements.BLOCKQUOTE);
     public static final CommandDefinition LINK = CommandDefinition.of("link", LinkCommand::new);
+    public static final CommandDefinition EMBED = CommandDefinition.of("embed", EmbedCommand::new);
     public static final CommandDefinition HTML = CommandDefinition.of("html", HTMLCommand::new);
     public static final CommandDefinition SOFT_TABLE = CommandDefinition.of("softTable", SoftTableCommand::new);
     public static final CommandDefinition CODE = CommandDefinition.of("code", CodeCommand::new);
@@ -56,11 +59,14 @@ public class Commands {
         RUBY,
         QUOTE,
         EMPHASIS,
+        MARK,
+        COLOR,
         DETAILS,
         SUMMARY,
         ASIDE,
         BLOCK_QUOTE,
         LINK,
+        EMBED,
         HTML,
         TABLE,
         ROW,
@@ -107,7 +113,7 @@ public class Commands {
     }
 
     public static CommandSet formatting() {
-        return CommandSet.of(BOLD, ITALIC, UNDERLINE, STRIKETHROUGH, QUOTE);
+        return CommandSet.of(BOLD, ITALIC, UNDERLINE, STRIKETHROUGH, QUOTE, EMPHASIS, MARK, COLOR);
     }
 
     public static CommandSet tables() {

@@ -263,4 +263,27 @@ public class CommandsTest extends DOMTest {
             "class=\"ag-caption\"><a>Figure " + "1</a>test</figcaption></p></figure></article></main>");
     }
 
+    @Test
+    public void color() throws IOException {
+        this.test("&color(#ff0000, Hello there!)", "<main class=\"autograph\"><span style=\"color: #ff0000;\"><p>Hello there!</p></span></main>");
+        this.test("&color(#ff0000, &b(bold text))", "<main class=\"autograph\"><b style=\"color: #ff0000;\">bold text</b></main>");
+    }
+
+    @Test(expected = CommandException.class)
+    public void colorNoContent() throws IOException {
+        this.test("&color(#ff0000)", "");
+    }
+
+    @Test
+    public void mark() throws IOException {
+        this.test("&mark(text)", "<main class=\"autograph\"><mark>text</mark></main>");
+        this.test("foo &mark(text) bar", "<main class=\"autograph\"><p>foo <mark>text</mark> bar</p></main>");
+    }
+
+    @Test
+    public void embed() throws IOException {
+        this.test("&embed(600x340, foo.png)", "<main class=\"autograph\"><embed width=\"600\" type=\"image/png\" src=\"foo.png\" height=\"340\" /></main>");
+        this.test("&embed(800x700, myFile.txt)", "<main class=\"autograph\"><embed width=\"800\" type=\"text/plain\" src=\"myFile.txt\" height=\"700\" /></main>");
+    }
+
 }
