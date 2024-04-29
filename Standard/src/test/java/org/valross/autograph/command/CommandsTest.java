@@ -265,7 +265,7 @@ public class CommandsTest extends DOMTest {
 
     @Test
     public void color() throws IOException {
-        this.test("&color(#ff0000, Hello there!)", "<main class=\"autograph\"><span style=\"color: #ff0000;\"><p>Hello there!</p></span></main>");
+        this.test("&color(#ff0000, Hello there!)", "<main class=\"autograph\"><span style=\"color: #ff0000;\">Hello there!</span></main>");
         this.test("&color(#ff0000, &b(bold text))", "<main class=\"autograph\"><b style=\"color: #ff0000;\">bold text</b></main>");
     }
 
@@ -284,6 +284,26 @@ public class CommandsTest extends DOMTest {
     public void embed() throws IOException {
         this.test("&embed(600x340, foo.png)", "<main class=\"autograph\"><embed width=\"600\" type=\"image/png\" src=\"foo.png\" height=\"340\" /></main>");
         this.test("&embed(800x700, myFile.txt)", "<main class=\"autograph\"><embed width=\"800\" type=\"text/plain\" src=\"myFile.txt\" height=\"700\" /></main>");
+    }
+
+    @Test
+    public void strong() throws IOException {
+        this.test("&strong(hello there)", "<main class=\"autograph\"><strong>hello there</strong></main>");
+        this.test("hello &strong(world) there", "<main class=\"autograph\"><p>hello <strong>world</strong> there</p></main>");
+    }
+    @Test
+    public void ruler() throws IOException {
+        this.test("&ruler()", "<main class=\"autograph\"><hr /></main>");
+        this.test("hello\n\n&ruler()\n\nthere", "<main class=\"autograph\"><p>hello</p><hr /><p>there</p></main>");
+    }
+    @Test
+    public void break_() throws IOException {
+        this.test("&break()", "<main class=\"autograph\"><br /></main>");
+        this.test("hello&break()there", "<main class=\"autograph\"><p>hello<br />there</p></main>");
+    }
+    @Test
+    public void p() throws IOException {
+        this.test("&p(paragraph)", "<main class=\"autograph\"><p>paragraph</p></main>");
     }
 
 }

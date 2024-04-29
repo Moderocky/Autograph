@@ -26,8 +26,12 @@ public class Commands {
         STRIKETHROUGH = inlineCommand(StandardElements.S),
         QUOTE = inlineCommand(StandardElements.Q),
         EMPHASIS = inlineCommand(StandardElements.EM),
+        STRONG = inlineCommand(StandardElements.STRONG),
         MARK = inlineCommand(StandardElements.MARK),
-        COLOR = CommandDefinition.of("color", ColorCommand::new);
+        COLOR = CommandDefinition.of("color", ColorCommand::new),
+        LINE_BREAK = inlineCommand("break", StandardElements.BR),
+        HORIZONTAL_RULE = inlineCommand("ruler", StandardElements.HR),
+        PARAGRAPH = inlineCommand(StandardElements.P);
     public static final CommandDefinition TABLE = blockCommand(StandardElements.TABLE),
         ROW = inlineCommand("row", StandardElements.TR),
         CELL = inlineCommand("cell", StandardElements.TD);
@@ -52,6 +56,10 @@ public class Commands {
 
     private static final CommandDefinition[] commands = new CommandDefinition[] {
         COMMENT,
+        PARAGRAPH,
+        STRONG,
+        LINE_BREAK,
+        HORIZONTAL_RULE,
         BOLD,
         ITALIC,
         UNDERLINE,

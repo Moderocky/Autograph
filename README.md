@@ -111,17 +111,20 @@ The only rule is that they must terminate at a closing `)` bracket.
 
 These commands can contain text (and other commands).
 
-| Command             | Description                            | HTML Tag |
-|---------------------|----------------------------------------|----------|
-| `&i(...)`           | Italic                                 | `<i>`    |
-| `&b(...)`           | Bold                                   | `<b>`    |
-| `&u(...)`           | Underline                              | `<u>`    |
-| `&s(...)`           | Strikethrough                          | `<s>`    |
-| `&q(...)`           | Quotation (inline)                     | `<q>`    |
-| `&em(...)`          | Emphasis (for screen reader)           | `<em>`   |
-| `&mark(...)`        | Highlight text                         | `<mark>` |
-| `&color(#HEX, ...)` | Text colour (hexadecimal colour code)  | `<span>` |
-| `&code(...)`        | Code well: permits (balanced) brackets | `<code>` |
+| Command        | Description                            | HTML Tag   |
+|----------------|----------------------------------------|------------|
+| `&i(...)`      | Italic                                 | `<i>`      |
+| `&b(...)`      | Bold                                   | `<b>`      |
+| `&u(...)`      | Underline                              | `<u>`      |
+| `&s(...)`      | Strikethrough                          | `<s>`      |
+| `&q(...)`      | Quotation (inline)                     | `<q>`      |
+| `&p(...)`      | Paragraph (explicit wrap)              | `<p>`      |
+| `&em(...)`     | Emphasis (for screen reader)           | `<em>`     |
+| `&strong(...)` | Strong (semantic importance)           | `<strong>` |
+| `&mark(...)`   | Highlight text                         | `<mark>`   |
+| `&break()`     | Line break (new line in text)          | `<br>`     |
+| `&ruler()`     | Horizontal rule (line across document) | `<hr>`     |
+| `&code(...)`   | Code well: permits (balanced) brackets | `<code>`   |
 
 ## Block Elements
 
