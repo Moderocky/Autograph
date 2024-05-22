@@ -21,6 +21,11 @@ public class FootnoteCommand extends HTMCommandParser {
         this.article = this.findOuter(ArticleCommand.class);
     }
 
+    public static String dummyAnchor(String content) {
+        int result = 31 + (31 + Objects.hashCode(content));
+        return "footnote-" + Integer.toHexString(1 ^ result);
+    }
+
     @Override
     public HTMNode parse() throws IOException {
         this.consumeWhitespace();
@@ -37,11 +42,6 @@ public class FootnoteCommand extends HTMCommandParser {
         this.article.footnotes.add(new HTMNode(list, title, footnote));
         final HTMElement link = StandardElements.A.href("#" + id).write(String.valueOf(index));
         return new HTMNode(StandardElements.SUP.classes("ag-reference"), link);
-    }
-
-    public static String dummyAnchor(String content) {
-        int result = 31 + (31 + Objects.hashCode(content));
-        return "footnote-" + Integer.toHexString(1 ^ result);
     }
 
 }

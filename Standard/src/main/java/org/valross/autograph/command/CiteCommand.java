@@ -6,14 +6,12 @@ import org.valross.autograph.document.Body;
 import org.valross.autograph.document.CommandNode;
 import org.valross.autograph.document.Node;
 import org.valross.autograph.document.model.HTMNode;
-import org.valross.autograph.document.model.ParagraphNode;
 import org.valross.autograph.error.CommandException;
 import org.valross.autograph.parser.Source;
 import org.valross.autograph.parser.command.ContentParser;
 import org.valross.autograph.parser.command.MultiCommandParser;
 
 import java.io.IOException;
-import java.util.List;
 
 public class CiteCommand extends MultiCommandParser<Node> {
 

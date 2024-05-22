@@ -21,6 +21,19 @@ public class FigureCommand extends HTMCommandParser {
         this.article = this.findOuter(ArticleCommand.class);
     }
 
+    protected static FigureCommand.FigureStub compileStub(ArticleCommand article, String name) {
+        int index = 0;
+        for (FigureCommand.FigureStub figure : article.figures) {
+            ++index;
+            if (!figure.name.equals(name)) continue;
+            return figure;
+        }
+        final FigureCommand.FigureStub stub = new FigureCommand.FigureStub(name, ++index);
+        stub.id = "figure-" + Integer.toHexString(index ^ name.hashCode());
+        article.figures.add(stub);
+        return stub;
+    }
+
     @Override
     public HTMNode parse() throws IOException {
         this.consumeWhitespace();
@@ -40,19 +53,6 @@ public class FigureCommand extends HTMCommandParser {
             this.addNode(text.parse());
         } while (this.hasNext());
         return this.nodes();
-    }
-
-    protected static FigureCommand.FigureStub compileStub(ArticleCommand article, String name) {
-        int index = 0;
-        for (FigureCommand.FigureStub figure : article.figures) {
-            ++index;
-            if (!figure.name.equals(name)) continue;
-            return figure;
-        }
-        final FigureCommand.FigureStub stub = new FigureCommand.FigureStub(name, ++index);
-        stub.id = "figure-" + Integer.toHexString(index ^ name.hashCode());
-        article.figures.add(stub);
-        return stub;
     }
 
     protected static class FigureStub {
